@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>872</width>
+    <height>508</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Afficher clients </string>
+  </property>
+  <widget class="QGroupBox" name="Affiche">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>70</y>
+     <width>341</width>
+     <height>341</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 25 14pt &quot;Corbel Light&quot;;</string>
+   </property>
+   <property name="title">
+    <string>Afficher Client </string>
+   </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>120</y>
+      <width>56</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+	font: 10pt &quot;Yu Gothic UI&quot;;
+font-weight: bold;
+font-size: 17px;
+color: #28322E;
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Nom</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>160</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+	font: 10pt &quot;Yu Gothic UI&quot;;
+font-weight: bold;
+font-size: 17px;
+color: #28322E;
+}</string>
+    </property>
+    <property name="text">
+     <string>Prenom</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>80</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+	font: 10pt &quot;Yu Gothic UI&quot;;
+font-weight: bold;
+font-size: 17px;
+color: #28322E;
+}</string>
+    </property>
+    <property name="text">
+     <string>Identifiant</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>240</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+	font: 10pt &quot;Yu Gothic UI&quot;;
+font-weight: bold;
+font-size: 17px;
+color: #28322E;
+}</string>
+    </property>
+    <property name="text">
+     <string>Adresse mail</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>200</y>
+      <width>111</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+	font: 10pt &quot;Yu Gothic UI&quot;;
+font-weight: bold;
+font-size: 17px;
+color: #28322E;
+}</string>
+    </property>
+    <property name="text">
+     <string>Date d'achat</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>280</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+	font: 10pt &quot;Yu Gothic UI&quot;;
+font-weight: bold;
+font-size: 17px;
+color: #28322E;
+}</string>
+    </property>
+    <property name="text">
+     <string>Téléphone</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_nomD">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>110</y>
+      <width>160</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> QLineEdit{
+border: 2px white;
+border-radius: 15px;
+background: #B0C5BD;
+min-width: 150px;
+max-width: 150px;
+min-height: 30px;
+max-height: 30px;
+padding-left: 10px;
+font: 10pt &quot;Yu Gothic UI&quot;;
+}</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_prenomD">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>150</y>
+      <width>160</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> QLineEdit{
+border: 2px white;
+border-radius: 15px;
+background: #B0C5BD;
+min-width: 150px;
+max-width: 150px;
+min-height: 30px;
+max-height: 30px;
+padding-left: 10px;
+font: 10pt &quot;Yu Gothic UI&quot;;
+}
+</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_idD">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>70</y>
+      <width>160</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> QLineEdit{
+border: 2px white;
+border-radius: 15px;
+background: #B0C5BD;
+min-width: 150px;
+max-width: 150px;
+min-height: 30px;
+max-height: 30px;
+padding-left: 10px;
+font: 10pt &quot;Yu Gothic UI&quot;;
+}</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_mailD">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>230</y>
+      <width>160</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> QLineEdit{
+border: 2px white;
+border-radius: 15px;
+background: #B0C5BD;
+min-width: 150px;
+max-width: 150px;
+min-height: 30px;
+max-height: 30px;
+padding-left: 10px;
+font: 10pt &quot;Yu Gothic UI&quot;;
+}</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="lineEdit_telD">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>270</y>
+      <width>160</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> QLineEdit{
+border: 2px white;
+border-radius: 15px;
+background: #B0C5BD;
+min-width: 150px;
+max-width: 150px;
+min-height: 30px;
+max-height: 30px;
+padding-left: 10px;
+font: 10pt &quot;Yu Gothic UI&quot;;
+}</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QDateEdit" name="dateEditD">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>190</y>
+      <width>160</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"> QDateEdit{
+border: 2px white;
+border-radius: 15px;
+background: #B0C5BD;
+min-width: 150px;
+max-width: 150px;
+min-height: 30px;
+max-height: 30px;
+padding-left: 10px;
+font: 10pt &quot;Yu Gothic UI&quot;;
+}</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>871</width>
+     <height>511</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="taswira.qrc">:/new/prefix1/back.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <zorder>label_7</zorder>
+  <zorder>Affiche</zorder>
+ </widget>
+ <resources>
+  <include location="taswira.qrc"/>
+ </resources>
+ <connections/>
+</ui>
