@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 #include<QString>
 #include <QMainWindow>
+#include <QDateEdit>
+#include "agri.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,13 +17,27 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private slots:
 
     void on_ajouter_clicked();
 
-    void on_pushButton_5_clicked();
+    void on_button_clients_clicked();
+
+    void on_button_machines_clicked();
+
+    void on_button_employ_clicked();
+
+    void on_button_animaux_clicked();
+
+    void on_button_agri_clicked();
+
+    void on_suppression_clicked();
+
+    void on_modifier_clicked();
 
 private:
     Ui::MainWindow *ui;
+    agri a;
 };
 #endif // MAINWINDOW_H
