@@ -1,25 +1,122 @@
 #include "machine.h"
-
+#include<QSqlQuery>
+#include<QDebug>
+#include<QObject>
 machine::machine()
 {
   serie="";
   etat="";
-  employe="";
   fonction="";
   position="";
-  depenses=0;
+  nb_heures=0;
+  q_carburant=0;
+}
+machine::machine(QString serie,QString etat,QString fonction,QString position,int nb_heures,int q_carburant)
+{
+    this->serie=serie;
+    this->etat=etat;
+    this->fonction=fonction;
+    this->position=position;
+    this->nb_heures=nb_heures;
+    this->q_carburant=q_carburant;
 }
 void machine::setserie(QString s){serie=s;}
 void machine::setetat(QString t){etat=t;}
-void machine::setemploye(QString e){employe=e;}
+void machine::setnb_heures(int nb){nb_heures=nb;}
 void machine::setfonction(QString f){fonction=f;}
 void machine::setposition(QString p){position=p;}
-void machine::setdepenses(float px){depenses=px;}
+void machine::setq_carburant(int qc){q_carburant=qc;}
 
 
 QString machine::getserie(){return serie;}
 QString machine::getetat(){return etat;}
-QString machine::getemploye(){return employe;}
+int machine::getnb_heures(){return nb_heures;}
 QString machine::getfonction(){return fonction;}
 QString machine::getposition(){return position;}
-float machine::getdepenses(){return depenses;}
+int machine::getq_carburant(){return q_carburant;}
+bool machine::ajouter()
+{
+
+    QSqlQuery query;
+         query.prepare("INSERT INTO machines (serie, etatm, fonction,position,qnt_carburant,nombre_heure) "
+                       "VALUES (:serie, :etatm, :fonction,:position,:qnt_carburant,:nombre_heure)");
+         query.bindValue(":serie", serie);
+         query.bindValue(":etatm", etat);
+         query.bindValue(":fonction", fonction);
+         query.bindValue(":position", position);
+         QString qnt_string=QString::number(q_carburant);
+         query.bindValue(":qnt_carburant", qnt_string);
+         QString nb_string=QString::number(nb_heures);
+         query.bindValue(":nombre_heure", nb_string);
+         return query.exec();
+
+
+}
+QSqlQueryModel* machine::afficher()
+{
+    QSqlQueryModel* model=new QSqlQueryModel();
+      model->setQuery("SELECT * FROM machines ORDER BY fonction ASC");
+          model->setQuery("SELECT *  FROM MACHINES");
+          model->setHeaderData(0, Qt::Horizontal, QObject::tr("serie"));
+          model->setHeaderData(1, Qt::Horizontal, QObject::tr("etat machine"));
+          model->setHeaderData(1, Qt::Horizontal, QObject::tr("fonction"));
+          model->setHeaderData(1, Qt::Horizontal, QObject::tr("position"));
+          model->setHeaderData(1, Qt::Horizontal, QObject::tr("quantite de carburant"));
+          model->setHeaderData(1, Qt::Horizontal, QObject::tr("nombre d'heure"));
+
+return model;
+}
+bool machine::supprimer(const QString &seri)
+{
+    QSqlQuery checkQuery;
+
+         checkQuery.prepare("SELECT SERIE FROM machines where SERIE= :seri");
+        checkQuery.bindValue(0, seri);
+        if (checkQuery.exec()&&checkQuery.next())
+        {QSqlQuery deleteQuery;
+            deleteQuery.prepare("Delete from machines where SERIE= :seri");
+            deleteQuery.bindValue(0, seri);
+            return deleteQuery.exec();
+        }
+        else
+            return false;
+}
+bool machine::updateData( QString seri)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE machines SET ETATM = :etat, FONCTION = :fonction, POSITION = :position, QNT_CARBURANT = :q_carburant, NOMBRE_HEURE = :nb_heures WHERE SERIE = :serie");
+    query.bindValue(":etat", etat);
+    query.bindValue(":fonction", fonction);
+    query.bindValue(":position", position);
+    query.bindValue(":q_carburant", q_carburant);
+    query.bindValue(":nb_heures", nb_heures);
+    query.bindValue(":serie", seri);
+
+    return query.exec();
+}
+QSqlQueryModel* machine::rechercherParSerie(QString seri)
+{
+
+
+    QSqlQuery query;
+    query.prepare("SELECT * FROM machines WHERE serie = :serie");
+    query.bindValue(":serie", seri);
+
+    if (query.exec())
+    {
+        QSqlQueryModel *searchResultModel = new QSqlQueryModel();
+        searchResultModel->setQuery(query);
+        return searchResultModel;
+
+    }
+    else
+        return nullptr;
+    }
+
+/*void machine::stat()
+{
+    QString query="SELECT ETATM, NOMBRE_HEURE FROM machines";
+    QSqlQueryModel *model = new QSqlQueryModel();
+    model->setQuery(query);
+
+}*/
