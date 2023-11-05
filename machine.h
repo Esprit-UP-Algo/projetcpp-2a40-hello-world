@@ -1,26 +1,31 @@
 #ifndef MACHINE_H
 #define MACHINE_H
 #include<QString>
-
+#include<QSqlQuery>
+#include<QSqlQueryModel>
 class machine
 {
 private:
-    QString serie,etat,employe,fonction,position;
-    float depenses;
+    QString serie,etat,fonction,position;
+    int q_carburant,nb_heures;
 public:
     machine();
+    machine(QString,QString,QString,QString,int,int);
     void setserie(QString s);
     void setetat(QString t);
-    void setemploye(QString e);
     void setfonction(QString f);
     void setposition(QString p);
-    void setdepenses(float px);
+    void setnb_heures(int nb);
+    void setq_carburant(int qc);
     QString getserie();
     QString getetat();
-    QString getemploye();
     QString getfonction();
     QString getposition();
-    float getdepenses();
-};
-
-#endif // MACHINE_H
+    int getnb_heures();
+    int getq_carburant();
+    bool ajouter();
+    QSqlQueryModel* afficher();
+    bool supprimer(const QString &seri);
+    bool updateData( QString seri);
+   QSqlQueryModel*rechercherParSerie(QString);
+   void stat();
