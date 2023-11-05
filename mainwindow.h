@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include"machine.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -15,6 +15,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
+
     void on_ajouter_clicked();
 
     void on_clients_clicked();
@@ -27,11 +28,15 @@ private slots:
 
     void on_agri_clicked();
 
-    void on_home_toggled(bool checked);
+    void on_supprimer_clicked();
 
-    void on_home_clicked();
+    void on_modifier_clicked();
+
+    void on_chercher_2_clicked();
 
 private:
     Ui::MainWindow *ui;
+    machine m;
+    machine m1;
 };
 #endif // MAINWINDOW_H
