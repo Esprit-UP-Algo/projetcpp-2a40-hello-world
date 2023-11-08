@@ -16,10 +16,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-
-
-
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -28,9 +24,18 @@ public:
 
 
       MainWindow(QWidget *parent = nullptr);
+
+
       ~MainWindow();
 
 private slots:
+      void animateTableBorderGradient();
+      int count0();
+      int count1();
+      int count2();
+      int count3();
+      int count4();
+      int count5();
     void on_pushButton_clicked();
     void animateLineEdit();
     void animateLineEdit2();
@@ -64,10 +69,30 @@ private slots:
 
     void on_pushButton_12_clicked();
 
+
+    void on_pushButton_13_clicked();
+    void RechercheID();
+
+
+    void on_pushButton_14_clicked();
+
+    void on_pushButton_15_clicked();
+
+    void on_pushButton_7_clicked();
+
+    void on_pushButton_8_clicked();
+
+    void on_pushButton_10_clicked();
+
+    void on_pushButton_11_clicked();
+    void chargerDonneesUtilisateur();
+
 private:
     Ui::MainWindow *ui;
     bool icon;
     QLabel *resultLabel;
     employe e;
+    int animationPosition=0;
+    QPropertyAnimation *buttonAnimation;
 };
 #endif // MAINWINDOW_H
