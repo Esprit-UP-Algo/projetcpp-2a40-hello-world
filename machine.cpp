@@ -2,6 +2,15 @@
 #include<QSqlQuery>
 #include<QDebug>
 #include<QObject>
+#include <QPrinter>
+#include <QTextDocument>
+#include<QtCharts>
+#include<QtSql>
+#include <QVariant>
+#include <QFile>
+#include <QTextStream>
+#include <QDateTime>
+#include <iostream>
 machine::machine()
 {
   serie="";
@@ -55,14 +64,14 @@ bool machine::ajouter()
 QSqlQueryModel* machine::afficher()
 {
     QSqlQueryModel* model=new QSqlQueryModel();
-      model->setQuery("SELECT * FROM machines ORDER BY fonction ASC");
-          model->setQuery("SELECT *  FROM MACHINES");
+      model->setQuery("SELECT serie,etatm,fonction,position,qnt_carburant,nombre_heure FROM machines ORDER BY fonction ASC");
+          //model->setQuery("SELECT *  FROM MACHINES");
           model->setHeaderData(0, Qt::Horizontal, QObject::tr("serie"));
-          model->setHeaderData(1, Qt::Horizontal, QObject::tr("etat machine"));
-          model->setHeaderData(1, Qt::Horizontal, QObject::tr("fonction"));
-          model->setHeaderData(1, Qt::Horizontal, QObject::tr("position"));
-          model->setHeaderData(1, Qt::Horizontal, QObject::tr("quantite de carburant"));
-          model->setHeaderData(1, Qt::Horizontal, QObject::tr("nombre d'heure"));
+          model->setHeaderData(1, Qt::Horizontal, QObject::tr("etat"));
+          model->setHeaderData(2, Qt::Horizontal, QObject::tr("fonction"));
+          model->setHeaderData(3, Qt::Horizontal, QObject::tr("position"));
+          model->setHeaderData(4, Qt::Horizontal, QObject::tr("qnt_carburant"));
+          model->setHeaderData(5, Qt::Horizontal, QObject::tr("nb_heure"));
 
 return model;
 }
@@ -92,7 +101,9 @@ bool machine::updateData( QString seri)
     query.bindValue(":nb_heures", nb_heures);
     query.bindValue(":serie", seri);
 
-    return query.exec();
+
+      return (query.exec());
+
 }
 QSqlQueryModel* machine::rechercherParSerie(QString seri)
 {
@@ -113,10 +124,36 @@ QSqlQueryModel* machine::rechercherParSerie(QString seri)
         return nullptr;
     }
 
-/*void machine::stat()
+bool machine::exporterMachinesEnPannePdf(const QString &nomFichier)
 {
-    QString query="SELECT ETATM, NOMBRE_HEURE FROM machines";
-    QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery(query);
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(nomFichier);
 
-}*/
+    QTextDocument document;
+    QSqlQueryModel *model = afficher(); // Assurez-vous que cette fonction renvoie le modèle de toutes les machines.
+
+    QString html = "<html><body><table border='1'>";
+    int rowCount = model->rowCount();
+    int columnCount = model->columnCount();
+
+    for (int row = 0; row < rowCount; ++row) {
+        QString etat = model->data(model->index(row, 1)).toString();
+
+        if (etat.toLower() == "en panne") {
+            html += "<tr>";
+            for (int col = 0; col < columnCount; ++col) {
+                QString data = model->data(model->index(row, col)).toString();
+                html += "<td>" + data + "</td>";
+            }
+            html += "</tr>";
+        }
+    }
+
+    html += "</table></body></html>";
+
+    document.setHtml(html);
+    document.print(&printer);
+
+    return true; // L'exportation PDF a réussi
+}

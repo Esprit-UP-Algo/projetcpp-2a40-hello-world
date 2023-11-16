@@ -3,11 +3,16 @@
 #include<QString>
 #include<QSqlQuery>
 #include<QSqlQueryModel>
+#include <QtWidgets>
+#include <QtSql>
+
 class machine
 {
 private:
     QString serie,etat,fonction,position;
     int q_carburant,nb_heures;
+
+
 public:
     machine();
     machine(QString,QString,QString,QString,int,int);
@@ -28,4 +33,11 @@ public:
     bool supprimer(const QString &seri);
     bool updateData( QString seri);
    QSqlQueryModel*rechercherParSerie(QString);
-   void stat();
+  bool exporterMachinesEnPannePdf(const QString &nomFichier);
+
+
+};
+
+
+
+#endif // MACHINE_H
