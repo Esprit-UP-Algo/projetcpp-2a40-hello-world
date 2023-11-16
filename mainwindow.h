@@ -36,6 +36,17 @@ private slots:
 
     void on_modifier_clicked();
 
+    void on_pdf_clicked();
+
+    void on_rech_clicked();
+
+    void showstat();
+
+
+    void on_calculbenefice_clicked();
+
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     agri a;

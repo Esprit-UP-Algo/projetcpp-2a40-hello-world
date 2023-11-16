@@ -31,6 +31,9 @@ public:
     bool supprimer(QString);
     QSqlQueryModel *afficher();
     bool updateData(QString);
+    QSqlQueryModel* rechercherPartype(QString);
+    bool exporterPdf(const QString &nomFichier);
+    float calculbenefice();
 };
 
 #endif // AGRI_H
