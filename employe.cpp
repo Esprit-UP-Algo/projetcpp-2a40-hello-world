@@ -51,6 +51,12 @@ QSqlQueryModel* employe::afficher()
          model->setHeaderData(3, Qt::Horizontal, QObject::tr("SALAIRE"));
          model->setHeaderData(4, Qt::Horizontal, QObject::tr("DATE"));
          model->setHeaderData(5, Qt::Horizontal, QObject::tr("NBA"));
+         model->setHeaderData(0, Qt::Horizontal, QSize(50, 30), Qt::SizeHintRole); //ID
+            model->setHeaderData(1, Qt::Horizontal, QSize(150, 30), Qt::SizeHintRole); //NOM
+            model->setHeaderData(2, Qt::Horizontal, QSize(150, 30), Qt::SizeHintRole); //PRENOM
+            model->setHeaderData(3, Qt::Horizontal, QSize(100, 30), Qt::SizeHintRole); //SALAIRE
+            model->setHeaderData(4, Qt::Horizontal, QSize(200, 30), Qt::SizeHintRole); //DATE
+            model->setHeaderData(5, Qt::Horizontal, QSize(100, 30), Qt::SizeHintRole); //NBA
     return model;
 }
 bool employe::supprimer(QString id)
@@ -95,6 +101,12 @@ QSqlQueryModel* employe::afficher1()
     model->setHeaderData(3, Qt::Horizontal, QObject::tr("SALAIRE"));
     model->setHeaderData(4, Qt::Horizontal, QObject::tr("DATEN"));
     model->setHeaderData(5, Qt::Horizontal, QObject::tr("NBA"));
+    model->setHeaderData(0, Qt::Horizontal, QSize(50, 30), Qt::SizeHintRole); //ID
+    model->setHeaderData(1, Qt::Horizontal, QSize(150, 30), Qt::SizeHintRole); //NOM
+    model->setHeaderData(2, Qt::Horizontal, QSize(150, 30), Qt::SizeHintRole); //PRENOM
+    model->setHeaderData(3, Qt::Horizontal, QSize(100, 30), Qt::SizeHintRole); //SALAIRE
+    model->setHeaderData(4, Qt::Horizontal, QSize(200, 30), Qt::SizeHintRole); //DATE
+    model->setHeaderData(5, Qt::Horizontal, QSize(100, 30), Qt::SizeHintRole); //NBA
     return model;
 }
 
