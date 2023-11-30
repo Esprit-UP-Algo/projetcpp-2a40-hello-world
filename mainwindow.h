@@ -12,6 +12,7 @@
 #include<QPieSeries>
 #include<QPieSlice>
 #include<employe.h>
+#include"arduino.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -27,6 +28,8 @@ public:
 
 
       ~MainWindow();
+signals:
+
 
 private slots:
       void animateTableBorderGradient();
@@ -87,6 +90,23 @@ private slots:
     void on_pushButton_11_clicked();
     void chargerDonneesUtilisateur();
 
+    void on_pushButton_home_2_clicked();
+
+    void on_pushButton_home_3_clicked();
+
+    void on_pushButton_home_4_clicked();
+
+    void on_pushButton_home_5_clicked();
+    void on_pushButton_16_clicked();
+
+    void on_notification_system();
+    //void sendFingerprintDataToArduino(char command, int id);
+    //bool initialize();
+    bool modifier_presence_login(QString ,QString PRECENSE);
+    void on_test_clicked();
+    void closeEvent(QCloseEvent *event) override;
+
+
 private:
     Ui::MainWindow *ui;
     bool icon;
@@ -94,5 +114,9 @@ private:
     employe e;
     int animationPosition=0;
     QPropertyAnimation *buttonAnimation;
+    QByteArray data;
+    Arduino A;
+
+
 };
 #endif // MAINWINDOW_H
