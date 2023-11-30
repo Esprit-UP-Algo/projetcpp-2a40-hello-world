@@ -27,15 +27,28 @@
 #include <QtCharts/QChart>
 #include <QtCharts/QChartView>
 #include <QtCharts/QPieSeries>
+#include"arduino.h"
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    //GROUPEBOX_1
+
     ui->setupUi(this);
+    //ARDUINO
+    int ret=A.connect_arduino();
+        switch(ret)
+        {
+        case (0):qDebug()<<"arduino is avilble and connected to :"<<A.getarduino_port_name();
+            break;
+        case (1):qDebug()<<"arduino is avilble but not connected to :"<<A.getarduino_port_name();
+            break;
+        case (-1):qDebug()<<"arduino is not avilble ";
+        }
 
-
+        QObject::connect(A.getserial(),SIGNAL(readyRead()),this,SLOT(on_test_clicked()));
+    on_notification_system();
+    //GROUPEBOX_1
     //ui->lineEdit->setPlaceholderText("Utilisateur");
     ui->lineEdit_2->setEchoMode(QLineEdit::Password);
     ui->lineEdit->setClearButtonEnabled(true);
@@ -83,55 +96,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->groupBox_3->hide();
     ui->groupBox_4->hide();
     //GROUPEBOX_2
-    int s0,s1,s2,s3,s4,s5;
-    s0=count0();
-    s1=count1();
-    s2=count2();
-    s3=count3();
-    s4=count4();
-    s5=count5();
-    cout<<s0;
-    float stat=s0+s1+s2+s3+s4+s5;
-    float x = (stat != 0) ? (s0 * 100) / stat : 0.0;
-    float y = (stat != 0) ? (s1 * 100) / stat : 0.0;
-    float z = (stat != 0) ? (s2 * 100) / stat : 0.0;
-    float d = (stat != 0) ? (s3 * 100) / stat : 0.0;
-    float w = (stat != 0) ? (s4 * 100) / stat : 0.0;
-    float p = (stat != 0) ? (s5 * 100) / stat : 0.0;
-
-
-    QString ch1=QString("0 nba:%1%").arg(x);
-    QString ch2=QString("1 nba:%1%").arg(y);
-    QString ch3=QString("2 nba:%1%").arg(z);
-    QString ch4=QString("3 nba:%1%").arg(d);
-    QString ch5=QString("4 nba:%1%").arg(w);
-    QString ch6=QString("5 nba:%1%").arg(p);
-    QPieSeries *series=new QPieSeries();
-    series->setHoleSize(0.39);
-    QPieSlice *slice= series->append(ch1,x);
-    slice->setLabelVisible();
-    QPieSlice *slice1= series->append(ch2,y);
-    slice1->setLabelVisible();
-    QPieSlice *slice2= series->append(ch3,z);
-    slice2->setLabelVisible();
-    QPieSlice *slice3= series->append(ch4,d);
-    slice3->setLabelVisible();
-    QPieSlice *slice4= series->append(ch5,w);
-    slice4->setLabelVisible();
-    QPieSlice *slice5= series->append(ch6,p);
-    slice5->setLabelVisible();
-    QChart *chart=new QChart();
-    chart->addSeries(series);
-    chart->setAnimationOptions(QChart::SeriesAnimations);
-    chart->setTitle("Statistique Pour Nombre D'année D'experience");
-    chart->setTheme(QChart::ChartThemeQt);
-    QBrush backgroundBrush(QColor(187,93,87,0));
-    chart->setBackgroundBrush(backgroundBrush);
-    QChartView *chartview=new QChartView(chart);
-    chartview->setRenderHint(QPainter::Antialiasing);
-    chartview->setFixedSize(ui->label_32->size());
-    chartview->setParent(ui->label_32);
-    ui->label_32->show();
+     ui->label_28->hide();
+     ui->label_28->setStyleSheet("QLabel { background:#73B19B;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI; }");
+    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     QIntValidator *intValidator = new QIntValidator();
     ui->lineEdit_id->setValidator(intValidator);
     ui->lineEdit_salaire->setValidator(intValidator);
@@ -142,6 +110,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit_prenom->setValidator(validator);
     QIcon rech("/Users/LENOVO/employe/—Pngtree—vector search icon_3783210");
     ui->lineEdit_3->addAction(rech,QLineEdit::LeadingPosition);
+    ui->lineEdit_8->addAction(rech,QLineEdit::LeadingPosition);
+    ui->lineEdit_9->addAction(rech,QLineEdit::LeadingPosition);
+    ui->lineEdit_10->addAction(rech,QLineEdit::LeadingPosition);
+    ui->lineEdit_11->addAction(rech,QLineEdit::LeadingPosition);
+    ui->lineEdit_8->setClearButtonEnabled(true);
+    ui->lineEdit_9->setClearButtonEnabled(true);
+    ui->lineEdit_10->setClearButtonEnabled(true);
+    ui->lineEdit_11->setClearButtonEnabled(true);
     ui->lineEdit_id->setPlaceholderText("Votre Identifiant");
     ui->lineEdit_nom->setPlaceholderText("Votre Nom");
     ui->lineEdit_prenom->setPlaceholderText("Votre Prenom");
@@ -155,32 +131,6 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *animationTimer = new QTimer(this);
     connect(animationTimer, &QTimer::timeout, this, &MainWindow::animateTableBorderGradient);
     animationTimer->start(60);
-
-    QGraphicsDropShadowEffect *shadow21=new QGraphicsDropShadowEffect;
-    shadow21->setBlurRadius(10);
-    shadow21->setColor(QColor(0,0,0,100));
-    shadow21->setOffset(5,0);
-    ui->pushButton_agriculture->setGraphicsEffect(shadow21);
-    QGraphicsDropShadowEffect *shadow2=new QGraphicsDropShadowEffect;
-    shadow2->setBlurRadius(10);
-    shadow2->setColor(QColor(0,0,0,100));
-    shadow2->setOffset(5,0);
-    ui->pushButton_client->setGraphicsEffect(shadow2);
-    QGraphicsDropShadowEffect *shadow20=new QGraphicsDropShadowEffect;
-    shadow20->setBlurRadius(10);
-    shadow20->setColor(QColor(0,0,0,100));
-    shadow20->setOffset(5,0);
-    ui->pushButton_animaux->setGraphicsEffect(shadow20);
-    QGraphicsDropShadowEffect *shadow19=new QGraphicsDropShadowEffect;
-    shadow19->setBlurRadius(10);
-    shadow19->setColor(QColor(0,0,0,100));
-    shadow19->setOffset(5,0);
-    ui->pushButton_employes->setGraphicsEffect(shadow19);
-    QGraphicsDropShadowEffect *shadow22=new QGraphicsDropShadowEffect;
-    shadow22->setBlurRadius(10);
-    shadow22->setColor(QColor(0,0,0,100));
-    shadow22->setOffset(5,0);
-    ui->pushButton_machines->setGraphicsEffect(shadow22);
 
     QGraphicsDropShadowEffect *shadow40=new QGraphicsDropShadowEffect;
     shadow40->setBlurRadius(10);
@@ -265,6 +215,16 @@ MainWindow::MainWindow(QWidget *parent)
     shadow35->setColor(QColor(0,0,0,60));
     shadow35->setOffset(5,5);
     ui->pushButton_12->setGraphicsEffect(shadow35);
+    QGraphicsDropShadowEffect *shadow36=new QGraphicsDropShadowEffect;
+    shadow36->setBlurRadius(10);
+    shadow36->setColor(QColor(0,0,0,80));
+    shadow36->setOffset(5,5);
+    ui->label_29->setGraphicsEffect(shadow36);
+    QGraphicsDropShadowEffect *shadow50=new QGraphicsDropShadowEffect;
+    shadow50->setBlurRadius(10);
+    shadow50->setColor(QColor(0,0,0,80));
+    shadow50->setOffset(5,5);
+    ui->label_40->setGraphicsEffect(shadow50);
     QGraphicsDropShadowEffect *shadow44=new QGraphicsDropShadowEffect;
     shadow44->setBlurRadius(10);
     shadow44->setColor(QColor(187,93,87,100));
@@ -347,6 +307,8 @@ MainWindow::MainWindow(QWidget *parent)
             animation->setLoopCount(100);
             animation->start();
 
+
+
     //GROUPBOX_3
     QGraphicsDropShadowEffect *shadow1=new QGraphicsDropShadowEffect;
     shadow1->setBlurRadius(10);
@@ -380,6 +342,7 @@ MainWindow::MainWindow(QWidget *parent)
     shadow13->setColor(QColor(0,0,0,100));
     shadow13->setOffset(5,5);
     ui->pushButton_6->setGraphicsEffect(shadow13);
+
     ui->lineEdit_4->setClearButtonEnabled(true);
     ui->lineEdit_5->setClearButtonEnabled(true);
     ui->lineEdit_6->setClearButtonEnabled(true);
@@ -412,9 +375,14 @@ MainWindow::MainWindow(QWidget *parent)
     shadow18->setColor(QColor(0,0,0,100));
     shadow18->setOffset(5,5);
     ui->pushButton_11->setGraphicsEffect(shadow18);
-
-
-
+    //GROUPBOX_5
+    ui->groupBox_5->hide();
+    //GROUPBOX_6
+    ui->groupBox_6->hide();
+    //GROUPBOX_7
+    ui->groupBox_7->hide();
+    //GROUPBOX_8
+    ui->groupBox_8->hide();
 
 }
 
@@ -611,7 +579,7 @@ void MainWindow::on_pushButton_clicked()
 }
 
 
-
+//LOGIN
 void MainWindow::on_pushButton_3_clicked()
 {   QString user, mdp;
     user=ui->lineEdit->text();
@@ -760,8 +728,10 @@ void MainWindow::on_pushButton_3_clicked()
         msgBox.exec();
         return;
     }
-    if (query.exec() && query.next()) {
+
+    if ((query.exec() && query.next()) || data=="0") {
         QString user;
+
         user=ui->lineEdit->text();
         QString message = QObject::tr("Bonjour ") + user.toUpper() + QObject::tr(". \nCliquez sur OK pour quitter.");
         QMessageBox msgBox(QMessageBox::Information, QObject::tr("Login avec succès"), message, QMessageBox::Ok);
@@ -828,7 +798,7 @@ void MainWindow::on_pushButton_5_clicked()
     ui->groupBox_3->show();
     ui->groupBox->hide();
 }
-
+//AJOUTER
 void MainWindow::on_pushButton_2_clicked()
 {
     QString id=ui->lineEdit_id->text();
@@ -966,10 +936,6 @@ void MainWindow::on_pushButton_2_clicked()
                 c++;
 
     }
-    if(c==0)
-    {
-    bool test=e.ajouter();
-    int id1=id.toInt();
     if (id.isEmpty()) {
         QMessageBox msgBox(QMessageBox::Warning, QObject::tr("Manque"), QObject::tr("S'il vous plaît entrer un ID."), QMessageBox::Ok);
 
@@ -1063,7 +1029,7 @@ void MainWindow::on_pushButton_2_clicked()
 
             msgBox.exec();
             c++;
-             return;
+            return;
         }
 
     if(salaireQ.isEmpty())
@@ -1126,9 +1092,15 @@ void MainWindow::on_pushButton_2_clicked()
 
             msgBox.setStyleSheet(styleSheet);
 
-            msgBox.exec();        return;
+            msgBox.exec();
+            c++;
+            return;
         }
 
+    if(c==0)
+    {
+    bool test=e.ajouter();
+    int id1=id.toInt();
     if (!e.idExists(id1)){
         QMessageBox msgBox(QMessageBox::Warning, QObject::tr("Existe déjà"), QObject::tr("L'ID que vous voulez entrer existe déjà."), QMessageBox::Ok);
 
@@ -1155,12 +1127,10 @@ void MainWindow::on_pushButton_2_clicked()
 
         msgBox.setStyleSheet(styleSheet);
 
-        msgBox.exec();        return;
+        msgBox.exec();
+
+        return;
     }
-
-
-
-
      if(test)
     {
         QMessageBox msgBox(QMessageBox::Information, QObject::tr("OK"), QObject::tr("Ajout avec succès\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
@@ -1224,60 +1194,303 @@ void MainWindow::on_pushButton_2_clicked()
 }
 
 void MainWindow::on_pushButton_client_clicked()
-{
+{   QString user;
+    user=ui->lineEdit->text();
 
-    ui->pushButton_client->setStyleSheet("QPushButton { background:#84B7A4;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI ; }");
-    ui->pushButton_machines->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_employes->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_animaux->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_agriculture->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
+    if(user=="admin" || user=="responsable client" )
+    {
+    QGraphicsDropShadowEffect *shadow50=new QGraphicsDropShadowEffect;
+      shadow50->setBlurRadius(1);
+      shadow50->setColor(QColor(132,183,164,100));
+      shadow50->setOffset(5,0);
+      ui->label_28->setGraphicsEffect(shadow50);
+    ui->label_28->setStyleSheet("QLabel { background:#84B7A4;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI ; }");
+    ui->label_28->show();
+    QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+            animation->setDuration(1000);
+             QPoint initialPosition =ui->label_28->pos();
+             int initialX = initialPosition.x();
+             int initialY = initialPosition.y();
+            animation->setStartValue(QRect(initialX,initialY,111,51));
+            animation->setEndValue(QRect(587, 15, 111, 51));
+            animation->setEasingCurve(QEasingCurve::Linear);
+            animation->start();
+     ui->groupBox_5->show();
+     ui->groupBox_8->hide();
+     ui->groupBox_7->hide();
+     ui->groupBox_6->hide();
+    }
+    else
+    {
+        QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Pas D'accés"), QObject::tr("Vous navez pas d accés pour cette gestion\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+
+                QString styleSheet = "QMessageBox {"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border: 2px outset grey;"
+                    "}"
+                    "QMessageBox QPushButton {"
+                    "color: rgba(52,90,105,100%);"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}"
+                    "QMessageBox QPushButton:hover {"
+                    "color: #B200ED ;"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 70%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}";
+
+                msgBox.setStyleSheet(styleSheet);
+
+                msgBox.exec();
+    }
+
 
 }
 
 void MainWindow::on_pushButton_machines_clicked()
 {
-    ui->pushButton_machines->setStyleSheet("QPushButton { background:#7DB5A2;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI ; }");
-    ui->pushButton_client->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_employes->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_animaux->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_agriculture->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
+    QString user;
+    user=ui->lineEdit->text();
+    if(user=="admin" || user=="ingenieur mecanique")
+    {
+    QGraphicsDropShadowEffect *shadow50=new QGraphicsDropShadowEffect;
+      shadow50->setBlurRadius(1);
+      shadow50->setColor(QColor(125,181,162,100));
+      shadow50->setOffset(5,0);
+      ui->label_28->setGraphicsEffect(shadow50);
+    ui->label_28->setStyleSheet("QLabel { background:#7DB5A2;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI ; }");
+    ui->label_28->show();
+    QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+            animation->setDuration(1000);
+             QPoint initialPosition =ui->label_28->pos();
+
+
+             int initialX = initialPosition.x();
+             int initialY = initialPosition.y();
+            animation->setStartValue(QRect(initialX,initialY,121,51));
+            animation->setEndValue(QRect(705, 15, 121, 51));
+            animation->setEasingCurve(QEasingCurve::Linear);
+            animation->start();
+            ui->groupBox_6->show();
+            ui->groupBox_8->hide();
+            ui->groupBox_7->hide();
+            ui->groupBox_5->hide();
+    }
+    else
+    {
+        QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Pas D'accés"), QObject::tr("Vous navez pas d accés pour cette gestion\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+
+                QString styleSheet = "QMessageBox {"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border: 2px outset grey;"
+                    "}"
+                    "QMessageBox QPushButton {"
+                    "color: rgba(52,90,105,100%);"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}"
+                    "QMessageBox QPushButton:hover {"
+                    "color: #B200ED ;"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 70%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}";
+
+                msgBox.setStyleSheet(styleSheet);
+
+                msgBox.exec();
+    }
+
 
 }
 
 void MainWindow::on_pushButton_employes_clicked()
-{
-    ui->pushButton_employes->setStyleSheet("QPushButton { background:#73B19B;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI; }");
-    ui->pushButton_client->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_machines->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_animaux->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_agriculture->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-}
+{   QString user;
+    user=ui->lineEdit->text();
+    if(user=="admin" || user=="chef personel")
+    {QGraphicsDropShadowEffect *shadow50=new QGraphicsDropShadowEffect;
+    shadow50->setBlurRadius(1);
+    shadow50->setColor(QColor(115,177,155,100));
+    shadow50->setOffset(5,0);
+    ui->label_28->setGraphicsEffect(shadow50);
+    ui->label_28->setStyleSheet("QLabel { background:#73B19B;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI; }");
+    ui->label_28->show();
+
+    QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+            animation->setDuration(1000);
+             QPoint initialPosition =ui->label_28->pos();
+             int initialX = initialPosition.x();
+             int initialY = initialPosition.y();
+            animation->setStartValue(QRect(initialX,initialY,131,51));
+            animation->setEndValue(QRect(837, 15, 131, 51));
+            animation->setEasingCurve(QEasingCurve::Linear);
+            animation->start();
+            ui->groupBox_8->hide();
+            ui->groupBox_7->hide();
+            ui->groupBox_6->hide();
+            ui->groupBox_5->hide();
+    }
+    else
+    {
+        QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Pas D'accés"), QObject::tr("Vous n savez pas d accés pour cette gestion\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+
+                QString styleSheet = "QMessageBox {"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border: 2px outset grey;"
+                    "}"
+                    "QMessageBox QPushButton {"
+                    "color: rgba(52,90,105,100%);"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}"
+                    "QMessageBox QPushButton:hover {"
+                    "color: #B200ED ;"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 70%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}";
+
+                msgBox.setStyleSheet(styleSheet);
+
+                msgBox.exec();
+    }
+
+
+
+
+ }
 
 void MainWindow::on_pushButton_animaux_clicked()
 {
+    QString user;
+    user=ui->lineEdit->text();
+    if(user=="admin" || user=="berger")
+    {
+    QGraphicsDropShadowEffect *shadow50=new QGraphicsDropShadowEffect;
+    shadow50->setBlurRadius(1);
+    shadow50->setColor(QColor(81,160,133,100));
+    shadow50->setOffset(5,0);
+    ui->label_28->setGraphicsEffect(shadow50);
+    ui->label_28->setStyleSheet("QLabel { background:#6aac95;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI ; }");
+    ui->label_28->show();
+    QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+            animation->setDuration(1000);
+             QPoint initialPosition =ui->label_28->pos();
+             int initialX = initialPosition.x();
+             int initialY = initialPosition.y();
+            animation->setStartValue(QRect(initialX,initialY,131,51));
+            animation->setEndValue(QRect(971, 15, 131, 51));
+            animation->setEasingCurve(QEasingCurve::Linear);
+            animation->start();
+            ui->groupBox_7->show();
+            ui->groupBox_8->hide();
+            ui->groupBox_6->hide();
+            ui->groupBox_5->hide();
+    }
+    else
+    {
+        QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Pas D'accés"), QObject::tr("Vous navez pas d accés pour cette gestion\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
 
-    ui->pushButton_animaux->setStyleSheet("QPushButton { background:#6aac95;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI ; }");
-    ui->pushButton_client->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_machines->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_employes->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_agriculture->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
+                QString styleSheet = "QMessageBox {"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border: 2px outset grey;"
+                    "}"
+                    "QMessageBox QPushButton {"
+                    "color: rgba(52,90,105,100%);"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}"
+                    "QMessageBox QPushButton:hover {"
+                    "color: #B200ED ;"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 70%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}";
+
+                msgBox.setStyleSheet(styleSheet);
+
+                msgBox.exec();
+    }
 
 }
 
 void MainWindow::on_pushButton_agriculture_clicked()
 {
-    ui->pushButton_agriculture->setStyleSheet("QPushButton { background:#84B7A4;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI;}");
-    ui->pushButton_client->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_machines->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_animaux->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
-    ui->pushButton_employes->setStyleSheet(" border-radius: 10px; font: 20pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
+    QString user;
+      user=ui->lineEdit->text();
+    if(user=="admin" || user=="chef de production")
+    {ui->label_28->setStyleSheet("QLabel { background:#84B7A4;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI;}");
+    ui->label_28->show();
+    QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+            animation->setDuration(1000);
+             QPoint initialPosition =ui->label_28->pos();
+
+             int initialX = initialPosition.x();
+             int initialY = initialPosition.y();
+            animation->setStartValue(QRect(initialX,initialY,141,51));
+            animation->setEndValue(QRect(440, 15, 141, 51));
+            animation->setEasingCurve(QEasingCurve::Linear);
+            animation->start();
+    ui->groupBox_8->show();
+    ui->groupBox_7->hide();
+    ui->groupBox_6->hide();
+    ui->groupBox_5->hide();
+    }
+    else
+    {
+        QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Pas D'accés"), QObject::tr("Vous navez pas d accés pour cette gestion\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+
+                QString styleSheet = "QMessageBox {"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border: 2px outset grey;"
+                    "}"
+                    "QMessageBox QPushButton {"
+                    "color: rgba(52,90,105,100%);"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}"
+                    "QMessageBox QPushButton:hover {"
+                    "color: #B200ED ;"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 70%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}";
+
+                msgBox.setStyleSheet(styleSheet);
+
+                msgBox.exec();
+    }
 
 }
-
+//INSERTION LOGIN
 void MainWindow::on_pushButton_6_clicked()
 {
-
-
         QString user = ui->lineEdit_5->text();
         QString pass = ui->lineEdit_4->text();
 
@@ -1356,9 +1569,81 @@ void MainWindow::on_pushButton_9_clicked()
     user=ui->lineEdit->text();
     if(user=="admin" || user=="chef personel")
     {
+        ui->label_28->show();
+
+        QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+                animation->setDuration(1000);
+                 QPoint initialPosition =ui->label_28->pos();
+                 int initialX = initialPosition.x();
+                 int initialY = initialPosition.y();
+                animation->setStartValue(QRect(initialX,initialY,131,51));
+                animation->setEndValue(QRect(837, 15, 131, 51));
+                animation->setEasingCurve(QEasingCurve::Linear);
+                animation->start();
     ui->groupBox_4->hide();
     ui->groupBox_2->show();
-    ui->pushButton_employes->setStyleSheet("QPushButton {background:#73B19B;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI }");
+    QList<QWidget*> childWidgets = ui->label_32->findChildren<QWidget*>();
+        for (QWidget* childWidget : childWidgets) {
+            childWidget->deleteLater();
+        }
+    ui->label_32->hide();
+    int s0,s1,s2,s3,s4,s5;
+    s0=count0();
+    s1=count1();
+    s2=count2();
+    s3=count3();
+    s4=count4();
+    s5=count5();
+    cout<<s0;
+    float stat=s0+s1+s2+s3+s4+s5;
+    float x = (stat != 0) ? (s0 * 100) / stat : 0.0;
+    float y = (stat != 0) ? (s1 * 100) / stat : 0.0;
+    float z = (stat != 0) ? (s2 * 100) / stat : 0.0;
+    float d = (stat != 0) ? (s3 * 100) / stat : 0.0;
+    float w = (stat != 0) ? (s4 * 100) / stat : 0.0;
+    float p = (stat != 0) ? (s5 * 100) / stat : 0.0;
+
+
+    QString ch1=QString("0 nba:%1%").arg(x);
+    QString ch2=QString("1 nba:%1%").arg(y);
+    QString ch3=QString("2 nba:%1%").arg(z);
+    QString ch4=QString("3 nba:%1%").arg(d);
+    QString ch5=QString("4 nba:%1%").arg(w);
+    QString ch6=QString("5 nba:%1%").arg(p);
+    QPieSeries *series=new QPieSeries();
+    series->setHoleSize(0.39);
+    QPieSlice *slice= series->append(ch1,x);
+    slice->setLabelVisible();
+    slice->setBrush(QColor(187,93,87));
+    QPieSlice *slice1= series->append(ch2,y);
+    slice1->setLabelVisible();
+    slice1->setBrush(QColor(255,186,186));
+    QPieSlice *slice2= series->append(ch3,z);
+    slice2->setLabelVisible();
+    slice2->setBrush(QColor(255,123,123));
+    slice2->setLabelColor(QColor(Qt::black));
+    QPieSlice *slice3= series->append(ch4,d);
+    slice3->setLabelVisible();
+    slice3->setBrush(QColor(255,82,82));
+    QPieSlice *slice4= series->append(ch5,w);
+    slice4->setLabelVisible();
+    slice4->setBrush(QColor(255,0,0,100));
+    QPieSlice *slice5= series->append(ch6,p);
+    slice5->setLabelVisible();
+    slice5->setBrush(QColor(167,0,0,100));
+    QChart *chart=new QChart();
+    chart->addSeries(series);
+    chart->setAnimationOptions(QChart::AllAnimations);
+    chart->setTitle("Statistique Pour Nombre D'année D'experience");
+    //chart->setTheme(QChart::ChartThemeHighContrast);
+    QBrush backgroundBrush(QColor(187,93,87,0));
+    chart->setBackgroundBrush(backgroundBrush);
+    QChartView *chartview=new QChartView(chart);
+    chartview->setRenderHint(QPainter::Antialiasing);
+    chartview->setFixedSize(ui->label_32->size());
+    chartview->setParent(ui->label_32);
+    ui->label_32->show();
+    //ui->->setStyleSheet("QPushButton {background:#73B19B;border-top-left-radius:20px;border-top-right-radius:20px;color:#28322E;font-size:20px;font: 18pt Yu Gothic UI }");
     }
     else
     {
@@ -1392,15 +1677,19 @@ void MainWindow::on_pushButton_9_clicked()
 
 
 }
-
+//HOME
 void MainWindow::on_pushButton_home_clicked()
 {
     ui->groupBox_2->hide();
+    ui->groupBox_5->hide();
+    ui->groupBox_6->hide();
+    ui->groupBox_7->hide();
+    ui->groupBox_8->hide();
     ui->groupBox_4->show();
 }
 
 
-
+//SUPPRIMER
 void MainWindow::on_pushButton_4_clicked()
 {
     employe e;
@@ -1537,16 +1826,16 @@ void MainWindow::on_pushButton_4_clicked()
 
 }
 
-
+//AFFICHAGE TABLEVIEW
 void MainWindow::on_pushButton_12_clicked()
 {
 
        ui->tableView->setModel(e.afficher());
-       ui->groupBox_4->hide();
-       ui->groupBox_2->show();
-
+       QList<QWidget*> childWidgets = ui->label_32->findChildren<QWidget*>();
+           for (QWidget* childWidget : childWidgets) {
+               childWidget->deleteLater();
+           }
        ui->label_32->hide();
-
        int s0,s1,s2,s3,s4,s5;
        s0=count0();
        s1=count1();
@@ -1563,7 +1852,6 @@ void MainWindow::on_pushButton_12_clicked()
        float w = (stat != 0) ? (s4 * 100) / stat : 0.0;
        float p = (stat != 0) ? (s5 * 100) / stat : 0.0;
 
-
        QString ch1=QString("0 nba:%1%").arg(x);
        QString ch2=QString("1 nba:%1%").arg(y);
        QString ch3=QString("2 nba:%1%").arg(z);
@@ -1574,35 +1862,38 @@ void MainWindow::on_pushButton_12_clicked()
        series->setHoleSize(0.39);
        QPieSlice *slice= series->append(ch1,x);
        slice->setLabelVisible();
+       slice->setBrush(QColor(187,93,87));
        QPieSlice *slice1= series->append(ch2,y);
        slice1->setLabelVisible();
+       slice1->setBrush(QColor(255,186,186));
        QPieSlice *slice2= series->append(ch3,z);
        slice2->setLabelVisible();
+       slice2->setBrush(QColor(255,123,123));
+       slice2->setLabelColor(QColor(Qt::black));
        QPieSlice *slice3= series->append(ch4,d);
        slice3->setLabelVisible();
+       slice3->setBrush(QColor(255,82,82));
        QPieSlice *slice4= series->append(ch5,w);
        slice4->setLabelVisible();
+       slice4->setBrush(QColor(255,0,0,100));
        QPieSlice *slice5= series->append(ch6,p);
        slice5->setLabelVisible();
+       slice5->setBrush(QColor(167,0,0,100));
        QChart *chart=new QChart();
        chart->addSeries(series);
-       chart->setAnimationOptions(QChart::SeriesAnimations);
-       chart->setTitle("Statistique Pour Nombre D'année D'experience ");
-       chart->setTheme(QChart::ChartThemeQt);
+       chart->setAnimationOptions(QChart::AllAnimations);
+       chart->setTitle("Statistique Pour Nombre D'année D'experience");
+       //chart->setTheme(QChart::ChartThemeHighContrast);
        QBrush backgroundBrush(QColor(187,93,87,0));
        chart->setBackgroundBrush(backgroundBrush);
        QChartView *chartview=new QChartView(chart);
        chartview->setRenderHint(QPainter::Antialiasing);
        chartview->setFixedSize(ui->label_32->size());
        chartview->setParent(ui->label_32);
-       ui->label_32->update();
        ui->label_32->show();
 
-
-
-
 }
-
+//UPDATE
 void MainWindow::on_pushButton_13_clicked()
 {
     QString id=ui->lineEdit_id->text();
@@ -1612,8 +1903,44 @@ void MainWindow::on_pushButton_13_clicked()
     QDate date=ui->dateEdit->date();
     int nb=ui->lineEdit_nbx->text().toInt();
     employe e(id,nom,prenom,salaire,date,nb);
+    int c=0;
+    int id1=id.toInt();
+    if (!e.idExists(id1)){
+        QMessageBox msgBox(QMessageBox::Warning, QObject::tr("N'existe Pas"), QObject::tr("L'ID que vous voulez entrer n'existe pas dans la base de donnée."), QMessageBox::Ok);
+
+        QString styleSheet = "QMessageBox {"
+            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+            "border: 2px outset grey;"
+            "}"
+            "QMessageBox QPushButton {"
+            "color: rgba(52,90,105,100%);"
+            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+            "border-style: solid;"
+            "border: 2px solid transparent;"
+            "border-radius: 5px;"
+            "padding: 1px;"
+            "}"
+            "QMessageBox QPushButton:hover {"
+            "color: #B200ED ;"
+            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 70%));"
+            "border-style: solid;"
+            "border: 2px solid transparent;"
+            "border-radius: 5px;"
+            "padding: 1px;"
+            "}";
+
+        msgBox.setStyleSheet(styleSheet);
+
+        msgBox.exec();
+
+        return;
+        c++;
+    }
+    if(c==0)
+    {
 
     bool test=e.update();
+
 
     if(test)
     {QMessageBox msgBox(QMessageBox::Information, QObject::tr("Succes"), QObject::tr("Update avec succes\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
@@ -1668,8 +1995,10 @@ void MainWindow::on_pushButton_13_clicked()
     msgBox.setStyleSheet(styleSheet);
 
     msgBox.exec();
+       }
     }
 }
+//BARRE RECHERCHER
 void MainWindow::RechercheID() {
     QString searchText = ui->lineEdit_3->text();
     QSqlQuery query;
@@ -1685,24 +2014,27 @@ void MainWindow::RechercheID() {
 
 
 
-
+//AFFICHAGE
 void MainWindow::on_pushButton_14_clicked()
 {
     ui->tableView->setModel(e.afficher1());
 
 }
-
+//PDF
 void MainWindow::on_pushButton_15_clicked()
 {
 
 
-
+    QSqlQuery query;
+    query.prepare("SELECT * FROM employe WHERE salaire >= 5000");
+    query.exec();
     QSqlQueryModel *model = qobject_cast<QSqlQueryModel*>(ui->tableView->model());
+    model->setQuery(query);
 
     if (model) {
         QString content;
 
-        //header
+
                 for (int col = 0; col < model->columnCount(); ++col) {
 
                      content += model->headerData(col, Qt::Horizontal).toString();
@@ -1773,7 +2105,23 @@ void MainWindow::on_pushButton_7_clicked()
     QString user;
         user=ui->lineEdit->text();
         if(user=="admin" || user=="responsable client")
-        {}
+        {
+            ui->label_28->show();
+
+            QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+                    animation->setDuration(1000);
+                     QPoint initialPosition =ui->label_28->pos();
+                     int initialX = initialPosition.x();
+                     int initialY = initialPosition.y();
+                    animation->setStartValue(QRect(initialX,initialY,111,51));
+                    animation->setEndValue(QRect(587, 15, 111, 51));
+                    animation->setEasingCurve(QEasingCurve::Linear);
+                    animation->start();
+            ui->groupBox_5->show();
+            ui->groupBox_2->show();
+            ui->groupBox_4->hide();
+
+        }
         else
         {QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Pas D'accés"), QObject::tr("Vous navez pas d accés pour cette gestion\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
 
@@ -1809,7 +2157,21 @@ void MainWindow::on_pushButton_8_clicked()
     QString user;
         user=ui->lineEdit->text();
         if(user=="admin" || user=="ingenieur mecanique")
-        {}
+        {ui->groupBox_6->show();
+            ui->groupBox_4->hide();
+            ui->label_28->show();
+
+            QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+                    animation->setDuration(1000);
+                     QPoint initialPosition =ui->label_28->pos();
+                     int initialX = initialPosition.x();
+                     int initialY = initialPosition.y();
+                    animation->setStartValue(QRect(initialX,initialY,121,51));
+                    animation->setEndValue(QRect(705, 15, 121, 51));
+                    animation->setEasingCurve(QEasingCurve::Linear);
+                    animation->start();
+            ui->groupBox_2->show();
+            }
         else
         {QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Pas D'accés"), QObject::tr("Vous navez pas d accés pour cette gestion\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
 
@@ -1845,7 +2207,21 @@ void MainWindow::on_pushButton_10_clicked()
     QString user;
         user=ui->lineEdit->text();
         if(user=="admin" || user=="berger")
-        {}
+        {ui->groupBox_7->show();
+            ui->label_28->show();
+
+            QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+                    animation->setDuration(1000);
+                     QPoint initialPosition =ui->label_28->pos();
+                     int initialX = initialPosition.x();
+                     int initialY = initialPosition.y();
+                    animation->setStartValue(QRect(initialX,initialY,131,51));
+                    animation->setEndValue(QRect(971, 15, 131, 51));
+                    animation->setEasingCurve(QEasingCurve::Linear);
+                    animation->start();
+            ui->groupBox_4->hide();
+            ui->groupBox_2->show();
+           }
         else
         {QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Pas D'accés"), QObject::tr("Vous navez pas d accés pour cette gestion\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
 
@@ -1880,7 +2256,21 @@ void MainWindow::on_pushButton_11_clicked()
     QString user;
         user=ui->lineEdit->text();
         if(user=="admin" || user=="chef production")
-        {}
+        {
+            ui->label_28->show();
+
+            QPropertyAnimation* animation = new QPropertyAnimation(ui->label_28, "geometry", this);
+                    animation->setDuration(1000);
+                     QPoint initialPosition =ui->label_28->pos();
+                     int initialX = initialPosition.x();
+                     int initialY = initialPosition.y();
+                    animation->setStartValue(QRect(initialX,initialY,151,51));
+                    animation->setEndValue(QRect(440, 15, 151, 51));
+                    animation->setEasingCurve(QEasingCurve::Linear);
+                    animation->start();ui->groupBox_8->show();
+            ui->groupBox_4->hide();
+            ui->groupBox_2->show();
+           }
         else
         {QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Pas D'accés"), QObject::tr("Vous navez pas d accés pour cette gestion\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
 
@@ -1909,6 +2299,7 @@ void MainWindow::on_pushButton_11_clicked()
 
             msgBox.exec();}
 }
+//CHARGER DONNER L HORS DE SAISIE DE RECHERCHER ET CLIQUER ENTRER
 void MainWindow::chargerDonneesUtilisateur() {
 
     QString idUtilisateur = ui->lineEdit_3->text();
@@ -1924,8 +2315,6 @@ void MainWindow::chargerDonneesUtilisateur() {
         float salaire=query.value("salaire").toFloat();
         QDate date=query.value("daten").toDate();
         int nba=query.value("nba").toInt();
-
-
         ui->lineEdit_nom->setText(nom);
         ui->lineEdit_prenom->setText(prenom);
         ui->lineEdit_id->setText(id);
@@ -1938,4 +2327,198 @@ void MainWindow::chargerDonneesUtilisateur() {
 }
 
 
+
+
+void MainWindow::on_pushButton_home_2_clicked()
+{
+    ui->groupBox_5->hide();
+    ui->groupBox_4->show();
+}
+
+void MainWindow::on_pushButton_home_3_clicked()
+{
+    ui->groupBox_6->hide();
+    ui->groupBox_4->show();
+}
+
+void MainWindow::on_pushButton_home_4_clicked()
+{
+    ui->groupBox_7->hide();
+    ui->groupBox_4->show();
+}
+
+void MainWindow::on_pushButton_home_5_clicked()
+{
+    ui->groupBox_8->hide();
+    ui->groupBox_4->show();
+}
+
+
+void MainWindow::on_pushButton_16_clicked()
+{
+    //ui->lineEdit->clear();
+    ui->lineEdit_2->clear();
+    ui->groupBox_4->hide();
+    ui->groupBox_2->hide();
+    ui->groupBox_5->hide();
+    ui->groupBox_6->hide();
+    ui->groupBox_7->hide();
+    ui->groupBox_8->hide();
+    ui->groupBox->show();
+    QString user=ui->lineEdit->text();
+    QString message = QObject::tr("Au Revoir ") + user.toUpper() + QObject::tr(" a La Prochaine. \nCliquez sur OK pour quitter.");
+    QMessageBox msgBox(QMessageBox::Information, QObject::tr("A bientot"),message, QMessageBox::Ok);
+                QString styleSheet = "QMessageBox {"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border: 2px outset grey;"
+                    "}"
+                    "QMessageBox QPushButton {"
+                    "color: rgba(52,90,105,100%);"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}"
+                    "QMessageBox QPushButton:hover {"
+                    "color: #B200ED ;"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 70%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}";
+
+                msgBox.setStyleSheet(styleSheet);
+                msgBox.exec();
+                ui->lineEdit->clear();
+                modifier_presence_login("admin", "ABSENT");
+
+}
+void MainWindow::on_notification_system()
+    {
+
+
+
+        // Send a Windows notification
+        NOTIFYICONDATA nid;
+        ZeroMemory(&nid, sizeof(NOTIFYICONDATA));
+
+        nid.cbSize = sizeof(NOTIFYICONDATA);
+        nid.hWnd = reinterpret_cast<HWND>(this->winId());
+        nid.uID = 1;  // Unique ID for the notification icon
+        nid.uFlags = NIF_INFO;
+        nid.dwInfoFlags = NIIF_INFO;
+        nid.uTimeout = 3000;  // Display time in milliseconds
+
+        wcscpy_s(nid.szInfoTitle, L"Notification");
+        wcscpy_s(nid.szInfo, L"Bievenue dans SMART FARM");
+
+        Shell_NotifyIcon(NIM_ADD, &nid);
+        Shell_NotifyIcon(NIM_DELETE, &nid);
+    }
+
+
+bool MainWindow::modifier_presence_login(QString admin,QString PRECENSE)
+{
+    QSqlQuery query;
+
+
+    query.prepare("UPDATE login SET etat=:PRECENSE where utilisateur=:admin");
+    query.bindValue(":PRECENSE",PRECENSE);
+    query.bindValue(":admin",admin);
+
+
+
+      if (query.exec()) {
+          // Commit the transaction
+          QSqlDatabase::database().commit();
+          return true;
+      } else {
+          // Rollback the transaction in case of an error
+          QSqlDatabase::database().rollback();
+          return false;
+      }
+
+
+
+
+}
+void MainWindow::on_test_clicked()
+{
+    bool test;
+    A.write_to_arduino("1");
+    data=A.read_from_arduino();
+    qDebug()<<"data="<< data;
+    if(data=="0")
+    {
+        ui->lineEdit->setText("admin");
+        ui->lineEdit_2->setText("123");
+        test=modifier_presence_login("admin","present");
+            if(test)
+               {
+                QMessageBox msgBox(QMessageBox::Information, QObject::tr("Empreinte avec Succés"), QObject::tr("Empreinte Match \nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+                QString styleSheet = "QMessageBox {"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border: 2px outset grey;"
+                    "}"
+                    "QMessageBox QPushButton {"
+                    "color: rgba(52,90,105,100%);"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}"
+                    "QMessageBox QPushButton:hover {"
+                    "color: #B200ED ;"
+                    "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 70%));"
+                    "border-style: solid;"
+                    "border: 2px solid transparent;"
+                    "border-radius: 5px;"
+                    "padding: 1px;"
+                    "}";
+
+                msgBox.setStyleSheet(styleSheet);
+                msgBox.exec();
+                on_pushButton_3_clicked();
+
+                }
+
+            }
+    else if(data=="2")
+    {
+        QMessageBox msgBox(QMessageBox::Critical, QObject::tr("Empreinte Non match"), QObject::tr("Empreinte Non Match \nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+        QString styleSheet = "QMessageBox {"
+            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+            "border: 2px outset grey;"
+            "}"
+            "QMessageBox QPushButton {"
+            "color: rgba(52,90,105,100%);"
+            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 90%), stop:1 rgba(132,183,164,90%));"
+            "border-style: solid;"
+            "border: 2px solid transparent;"
+            "border-radius: 5px;"
+            "padding: 1px;"
+            "}"
+            "QMessageBox QPushButton:hover {"
+            "color: #B200ED ;"
+            "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 220, 70%));"
+            "border-style: solid;"
+            "border: 2px solid transparent;"
+            "border-radius: 5px;"
+            "padding: 1px;"
+            "}";
+
+        msgBox.setStyleSheet(styleSheet);
+        msgBox.exec();
+    }
+
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    modifier_presence_login("admin", "absent");
+    QMainWindow::closeEvent(event);
+}
 
