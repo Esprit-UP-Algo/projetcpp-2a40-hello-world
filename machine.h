@@ -5,15 +5,18 @@
 #include<QSqlQueryModel>
 #include <QtWidgets>
 #include <QtSql>
+#include<QTimer>
 
 class machine
 {
+
 private:
     QString serie,etat,fonction,position;
     int q_carburant,nb_heures;
-
+    QSqlDatabase database;
 
 public:
+   // QMetaObject qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a);
     machine();
     machine(QString,QString,QString,QString,int,int);
     void setserie(QString s);
@@ -34,7 +37,7 @@ public:
     bool updateData( QString seri);
    QSqlQueryModel*rechercherParSerie(QString);
   bool exporterMachinesEnPannePdf(const QString &nomFichier);
-
+  QString rechercherParSerieFormat();
 
 };
 
