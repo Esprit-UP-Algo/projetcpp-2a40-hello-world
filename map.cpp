@@ -7,23 +7,26 @@ map::map(QWidget *parent) :
     ui(new Ui::map)
 {    qDebug() << "Creating map window...";
     ui->setupUi(this);
-    setupUi();
+    //setupUi();
 }
 
 map::~map()
 {
     delete ui;
 }
-void map::showMap(QWidget *parent) {
+/*void map::showMap(QWidget *parent)
+{
     map *mapWindow = new map(parent);
     mapWindow->show();
-}
-void map::setupUi() {  qDebug() << "Setting up UI...";
+}*/
+/*void map::setupUi()
+{
+    qDebug() << "Setting up UI...";
     blockLabels["bloc1"] = findChild<QLabel*>("bloc1");
     blockLabels["bloc2"] = findChild<QLabel*>("bloc2");
     blockLabels["bloc3"] = findChild<QLabel*>("bloc3");
     blockLabels["bloc4"] = findChild<QLabel*>("bloc4");
-}
+}*/
 void map::updateLabelFromMachine(const QString &machinePosition, const QString &machineSerie) {
     qDebug() << "Updating label for machine...";
 
