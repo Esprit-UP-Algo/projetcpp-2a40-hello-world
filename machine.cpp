@@ -11,6 +11,7 @@
 #include <QTextStream>
 #include <QDateTime>
 #include <iostream>
+
 machine::machine()
 {
   serie="";
@@ -43,6 +44,8 @@ int machine::getnb_heures(){return nb_heures;}
 QString machine::getfonction(){return fonction;}
 QString machine::getposition(){return position;}
 int machine::getq_carburant(){return q_carburant;}
+//crud
+//fonction ajouter
 bool machine::ajouter()
 {
 
@@ -61,6 +64,7 @@ bool machine::ajouter()
 
 
 }
+//afficher
 QSqlQueryModel* machine::afficher()
 {
     QSqlQueryModel* model=new QSqlQueryModel();
@@ -75,6 +79,7 @@ QSqlQueryModel* machine::afficher()
 
 return model;
 }
+//supprimer
 bool machine::supprimer(const QString &seri)
 {
     QSqlQuery checkQuery;
@@ -90,6 +95,7 @@ bool machine::supprimer(const QString &seri)
         else
             return false;
 }
+//modifier
 bool machine::updateData( QString seri)
 {
     QSqlQuery query;
@@ -105,6 +111,7 @@ bool machine::updateData( QString seri)
       return (query.exec());
 
 }
+//chercher
 QSqlQueryModel* machine::rechercherParSerie(QString seri)
 {
 
@@ -123,7 +130,7 @@ QSqlQueryModel* machine::rechercherParSerie(QString seri)
     else
         return nullptr;
     }
-
+//exportation pdf
 bool machine::exporterMachinesEnPannePdf(const QString &nomFichier)
 {
     QPrinter printer(QPrinter::HighResolution);
@@ -156,4 +163,21 @@ bool machine::exporterMachinesEnPannePdf(const QString &nomFichier)
     document.print(&printer);
 
     return true; // L'exportation PDF a réussi
+}
+
+//chercher pour laison arduino
+QString machine::rechercherParSerieFormat()
+{
+    QString serie;
+
+    QSqlQuery query;
+    query.prepare("SELECT serie FROM machines WHERE serie LIKE '000tunisie%'");
+
+    if (query.exec() && query.next()) {
+        serie = query.value(0).toString();
+    } else {
+        qDebug() << "Échec de l'exécution de la requête SQL : " << query.lastError().text();
+    }
+
+    return serie;
 }
