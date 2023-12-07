@@ -14,6 +14,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    if (myarduino.connect_arduino() == 0)
+        {
+            qDebug() << "Arduino connected successfully!";
+        }
+        else
+        {
+            qDebug() << "Failed to connect to Arduino!";
+        }
+  //controle de saisi
     ui->position->setItemData(0, QVariant(), Qt::UserRole - 1);
     ui->position->addItem("");
     ui->position->addItem("bloc1");
@@ -33,22 +42,24 @@ MainWindow::MainWindow(QWidget *parent)
      ui->fonction->addItem("fèrtilisation");
       ui->fonction->addItem("semis");
       ui->fonction->addItem("pulvérisation");
-
+      ui->fonction->addItem("arrosage");
+      ui->q_carburant->setValidator( new QIntValidator(0,200, this));
+      ui->nb_heures->setValidator(new QIntValidator(0,1000, this));
+      QRegExp regex("\\d{3}tunisie\\d{4}");
+      QRegExpValidator *validator = new QRegExpValidator(regex, this);
+      ui->serie->setValidator(validator);
+      //fenetre de metiers +
       fenetreMaintenance = nullptr;
-    fenetremap=nullptr;
-    currentmachine=nullptr;
+      fenetremap=nullptr;
+      currentmachine=nullptr;
 
-    connect(ui->map, &QPushButton::clicked, this, &MainWindow::on_map_clicked);
+    //connect(ui->map, &QPushButton::clicked, this, &MainWindow::on_map_clicked);
     ui->tabm->setModel(m.afficher());
     showMachineStatistics();
 
 
 
-     ui->q_carburant->setValidator( new QIntValidator(0,200, this));
-     ui->nb_heures->setValidator(new QIntValidator(0,1000, this));
-     QRegExp regex("\\d{3}tunisie\\d{4}");
-     QRegExpValidator *validator = new QRegExpValidator(regex, this);
-     ui->serie->setValidator(validator);
+
 
 updateStatistics();
 }
@@ -58,7 +69,7 @@ MainWindow::~MainWindow()
     delete ui;
 
 }
-
+//bouton ajouter
 void MainWindow::on_ajouter_clicked()
 {
 
@@ -134,7 +145,7 @@ void MainWindow::on_agri_clicked()
 
 
 
-
+//bouton modifier
 
 void MainWindow::on_modifier_clicked()
 {
@@ -161,7 +172,7 @@ void MainWindow::on_modifier_clicked()
 }
 
 
-
+//bouton pdf
 void MainWindow::on_pushButton_3_clicked()
 {
     QString nomFichierPdf = QFileDialog::getSaveFileName(this, "Enregistrer en PDF", "", "Fichiers PDF (*.pdf)");
@@ -177,6 +188,7 @@ void MainWindow::on_pushButton_3_clicked()
             }
         }
 }
+//bouton stat
 void MainWindow::showMachineStatistics()
 {
     QString sqlQuery = "SELECT serie, SUM(nombre_heure) AS heures_totales FROM machines GROUP BY serie";
@@ -215,7 +227,7 @@ void MainWindow::showMachineStatistics()
     layout->addWidget(chartView);
     connect(ui->tabm->model(), &QAbstractItemModel::dataChanged, this, &MainWindow::updateStatistics);
 }
-
+//update stat
 void MainWindow::updateStatistics()
 {
     QLayout *containerLayout = ui->chartContainer->layout();
@@ -265,7 +277,7 @@ void MainWindow::updateStatistics()
     }
 }
 
-
+//bouton chercher
 void MainWindow::on_rechercher_clicked()
 {
     machine m;
@@ -280,7 +292,7 @@ void MainWindow::on_rechercher_clicked()
         QMessageBox::critical(this, tr("Échec de la recherche"), tr("La recherche a échoué ou la série n'existe pas."));
     }
 }
-
+//bouton supprimer
 void MainWindow::on_supp_clicked()
 { QString serie=(ui->chercher->text());
     bool test=m1.supprimer(serie);
@@ -294,7 +306,7 @@ void MainWindow::on_supp_clicked()
 
 }
 
-
+//bouton ouvrir la fenetre metier maintenance
 void MainWindow::on_pushButton_clicked()
 {
     if (fenetreMaintenance)
@@ -308,18 +320,89 @@ void MainWindow::on_pushButton_clicked()
     {
         // Si la fenêtre maintenance n'existe pas, créez-la et affichez-la
         fenetreMaintenance = new maintenance(this);
-        fenetreMaintenance->show();
+
     }
+    fenetreMaintenance->show();
 }
 
+//bouton ouvrir la fenetre metier map
 void MainWindow::on_map_clicked()
 {
 
-    if (!fenetremap) {
+    /*if (!fenetremap) {
             fenetremap = new map(this);
         }
         fenetremap->show();
         QString machinePosition = ui->position->currentText();
             QString machineSerie = ui->serie->text();
-            fenetremap->updateLabelFromMachine(machinePosition, machineSerie);
+            fenetremap->updateLabelFromMachine(machinePosition, machineSerie);*/
+    if (fenetremap)
+       {
+           // Ensure the map window exists
+           fenetremap->show();
+
+           QTimer::singleShot(0, this, [this]() {
+               QString machinePosition = ui->position->currentText();
+               QString machineSerie = ui->serie->text();
+               fenetremap->updateLabelFromMachine(machinePosition, machineSerie);
+           });
+       }
+       else
+       {
+           // If the map window doesn't exist, create and show it
+           fenetremap = new map(this);
+           fenetremap->show();
+
+           QTimer::singleShot(0, this, [this]() {
+               QString machinePosition = ui->position->currentText();
+               QString machineSerie = ui->serie->text();
+               fenetremap->updateLabelFromMachine(machinePosition, machineSerie);
+           });
+       }
 }
+void MainWindow::setDatabase(QSqlDatabase& db) {
+    database = db;
+}
+//bouton arduino
+void MainWindow::on_pushButton_2_clicked()
+{
+    QByteArray dataToSend = "Hello Arduino!";
+        machine myMachine; // Remplacez ceci par votre instance de machine réelle
+        QByteArray dataFromArduino = myarduino.read_from_arduino();
+
+        // Traitement des données lues depuis l'Arduino
+        if (!dataFromArduino.isEmpty()) {
+            qDebug() << "Données lues depuis Arduino : " << dataFromArduino;
+
+            int wateringTime = myarduino.getWateringTimeFromData(dataFromArduino);
+            qDebug() << "Temps d'arrosage reçu depuis Arduino : " << wateringTime << " secondes";
+            if (wateringTime != -1) {
+
+
+                QString serie = myMachine.rechercherParSerieFormat();
+                 qDebug() << "Série trouvée dans la base de données : " << serie;
+                if (!serie.isEmpty()) {
+                    // Une série valide a été trouvée dans la base de données
+                    QSqlQuery updateQuery(database);
+                    updateQuery.prepare("UPDATE machines SET nombre_heure = :nb_heures WHERE serie = :serie");
+                    updateQuery.bindValue(":nb_heures", wateringTime);
+                    updateQuery.bindValue(":serie", serie);
+
+                    if (updateQuery.exec()) {
+                        qDebug() << "Heures d'arrosage mises à jour dans la base de données.";
+                    } else {
+                        qDebug() << "Échec de la mise à jour des heures d'arrosage dans la base de données : " << updateQuery.lastError().text();
+                            }
+                }
+                else {
+                    qDebug() << "Aucune machine avec une série valide trouvée dans la base de données.";
+                }
+
+            } else {
+                qDebug() << "Aucun temps d'arrosage trouvé dans les données lues depuis Arduino.";
+            }
+        } else {
+            qDebug() << "Aucune donnée lue depuis Arduino.";
+        }
+    }
+
