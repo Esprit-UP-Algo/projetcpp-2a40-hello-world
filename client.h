@@ -2,29 +2,51 @@
 #define CLIENT_H
 #include <QString>
 #include <QDate>
-
+#include <QSqlQueryModel>
+#include <QSqlQuery>
 class Client
 {
 private:
-    QString nom, prenom, id, mail, tel, rech;
+    QString nom, prenom, mail,tel, rech;
+    int id;
     QDate date;
 
 public:
+
+    //constructeurs
+    Client();
+    Client(QString, QString, QString, int, QString, QDate );
+
+   //setters
     void setnom(QString n);
     void setprenom(QString n);
-    void setid(QString n);
+    void setid(int n);
     void setmail(QString n);
     void setdate(QDate n);
     void settel(QString n);
     void setrech (QString n);
+    //getters
     QString get_nom();
     QString get_prenom();
-    QString get_id();
+    int get_id();
     QString get_mail();
     QDate get_date();
     QString get_tel();
     QString get_rech();
-    Client();
+
+    //Fonctionalites
+    bool ajouter ();
+    QSqlQueryModel * afficher();
+    bool supprimer (int id);
+    bool update();
+    bool trier();
+    QSqlQueryModel* chercher(int id);
+    bool exporterPdf(const QString &nomFichier);
+    int getNombreClientsParMois(int mois);
+
+
+
+
 };
 
-#endif // CLIENT_H
+#endif // CLIENTT_H
