@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>maintenance</class>
+ <widget class="QDialog" name="maintenance">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>731</width>
+    <height>484</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>130</y>
+     <width>341</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+	font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+font-weight: bold;
+font-size: 13px;
+color: white;}</string>
+   </property>
+   <property name="text">
+    <string>conserver dans l'historique des réparations:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="save">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>300</y>
+     <width>75</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+color: white;
+background-color: #998C45;
+border-style: solid;
+border-radius: 10;
+padding: 1px;
+font-size: 17px;
+padding-left: 12px;
+padding-right: 10px;
+font-weight: bold;
+font-size: 16px;
+color: #FFFFF;
+font-family: Tahoma;
+}
+QPushButton:pressed{
+color: #b1b1b1
+}</string>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="serie">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>160</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit{
+border: 2px white;
+border-radius: 15px;
+background: #FFFFFF;
+padding-left: 10px;
+font: 10pt &quot;Yu Gothic UI&quot;;
+
+}
+QLineEdit:focus{
+border: 2px black;
+
+background: #bdbdbd
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>260</y>
+     <width>47</width>
+     <height>14</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+	font: 10pt &quot;Yu Gothic UI&quot;;
+font-weight: bold;
+font-size: 17px;
+color: #6D2F20;
+}</string>
+   </property>
+   <property name="text">
+    <string>Cout</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>210</y>
+     <width>47</width>
+     <height>14</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+	font: 10pt &quot;Yu Gothic UI&quot;;
+font-weight: bold;
+font-size: 17px;
+color: #6D2F20;
+}</string>
+   </property>
+   <property name="text">
+    <string>Date</string>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="date">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>200</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QDateEdit
+{border: 2px white;
+border-radius: 15px;
+    background-color: white;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
+    spacing: 5px; 
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>-40</x>
+     <y>-20</y>
+     <width>831</width>
+     <height>700</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="pic.qrc">:/new/prefix/photo maintenence.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>170</y>
+     <width>47</width>
+     <height>14</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+	font: 10pt &quot;Yu Gothic UI&quot;;
+font-weight: bold;
+font-size: 17px;
+color: #6D2F20;
+}</string>
+   </property>
+   <property name="text">
+    <string>Serie</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="cout">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>250</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit{
+border: 2px white;
+border-radius: 15px;
+background: #FFFFFF;
+padding-left: 10px;
+font: 10pt &quot;Yu Gothic UI&quot;;
+
+}
+QLineEdit:focus{
+border: 2px black;
+
+background: #bdbdbd
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>110</y>
+     <width>331</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px white;
+border-radius: 15px;
+background-color: #998C45;}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labell">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>100</y>
+     <width>291</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+	font: 75 8pt &quot;MS Shell Dlg 2&quot;;
+
+font-weight: bold;
+font-size: 13px;
+color: white;}</string>
+   </property>
+   <property name="text">
+    <string>Enregistrez les données que vous souhaitez</string>
+   </property>
+  </widget>
+  <zorder>label_4</zorder>
+  <zorder>save</zorder>
+  <zorder>date</zorder>
+  <zorder>label_6</zorder>
+  <zorder>label_3</zorder>
+  <zorder>serie</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label</zorder>
+  <zorder>labell</zorder>
+  <zorder>label_5</zorder>
+  <zorder>cout</zorder>
+ </widget>
+ <resources>
+  <include location="pic.qrc"/>
+ </resources>
+ <connections/>
+</ui>

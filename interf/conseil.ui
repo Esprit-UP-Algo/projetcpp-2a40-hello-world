@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>conseil</class>
+ <widget class="QDialog" name="conseil">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>910</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QLabel" name="maladie">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>70</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #F6BB96;
+border-radius: 15px;
+color: #796F25; 
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label5">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>320</y>
+     <width>197</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #60567B;
+border-radius: 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_45">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>-5</y>
+     <width>911</width>
+     <height>661</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="pic.qrc">:/new/prefix/mariem.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label1">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>80</y>
+     <width>191</width>
+     <height>101</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #60567B;
+border-radius: 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="attention">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>290</y>
+     <width>201</width>
+     <height>291</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #60567B;
+border-radius: 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label3">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>340</y>
+     <width>191</width>
+     <height>121</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #60567B;
+border-radius: 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label7">
+   <property name="geometry">
+    <rect>
+     <x>680</x>
+     <y>190</y>
+     <width>181</width>
+     <height>281</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #60567B;
+border-radius: 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label6">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>120</y>
+     <width>201</width>
+     <height>161</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #60567B;
+border-radius: 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label2">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>190</y>
+     <width>191</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #60567B;
+border-radius: 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="type_3">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>30</y>
+     <width>171</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #F6BB96;
+border-radius: 15px;
+color: #796F25; 
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label4">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>170</y>
+     <width>197</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #60567B;
+border-radius: 15px;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="pesticide_2">
+   <property name="geometry">
+    <rect>
+     <x>690</x>
+     <y>140</y>
+     <width>151</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+border: 2px solid #F6BB96;
+border-radius: 15px;
+color: #796F25; 
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>label_45</zorder>
+  <zorder>label1</zorder>
+  <zorder>attention</zorder>
+  <zorder>label3</zorder>
+  <zorder>label7</zorder>
+  <zorder>label6</zorder>
+  <zorder>label2</zorder>
+  <zorder>type_3</zorder>
+  <zorder>label4</zorder>
+  <zorder>pesticide_2</zorder>
+  <zorder>label5</zorder>
+  <zorder>maladie</zorder>
+ </widget>
+ <resources>
+  <include location="pic.qrc"/>
+ </resources>
+ <connections/>
+</ui>
