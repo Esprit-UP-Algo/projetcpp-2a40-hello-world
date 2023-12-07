@@ -16,7 +16,6 @@ public:
     explicit benefice(QWidget *parent = nullptr);
     ~benefice();
     void setLabelText(const QString &text);
-    //void setLabelText1(const QString &text);
     void setBeneficeTotalText(const QString& text);
 
 

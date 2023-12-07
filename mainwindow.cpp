@@ -12,22 +12,32 @@
 #include <QSqlQuery>
 #include <QtCharts>
 #include <QtSql>
+
 using namespace std;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 
 {
-    QRegularExpression regex1("^agri\\d+");
+    QRegularExpression regex1("^agri\\d+"); // controle de saisie mta3 id
     ui->setupUi(this);
     ui->table->setModel(a.afficher());
-    showstat();
-
+    showstat(); // fonction mta3 statistics
+    int ret=ar.connect_arduino();
+    switch(ret)
+    {
+    case(0):qDebug()<<"Arduino is available and connected to: "<< ar.getarduino_port_name();
+        break;
+    case(1):qDebug()<<"Arduino is available but not connected to: "<< ar.getarduino_port_name();
+        break;
+    case(-1):qDebug()<<"arduino is not available";
+    }
+    //hedhom les controles de saisie
     ui->quantite->setValidator(new QIntValidator (0,300,this));
     ui->id->setValidator(new QRegularExpressionValidator(regex1,this));
     ui->prix_achat->setValidator(new QDoubleValidator(this));
     ui->prix_vente->setValidator(new QDoubleValidator(this));
-
+    // lahna khtr khadma b groupbox fil type w pesticide
     ui->type->addItem("");
     ui->pesticide->addItem("");
 
@@ -54,7 +64,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_ajouter_clicked()
+void MainWindow::on_ajouter_clicked() // hedhy ki tinzil al bouton ajouter
 {
     bool test;
     QString type=ui->type->currentText();
@@ -125,7 +135,7 @@ void MainWindow::on_button_agri_clicked()
     ui->button_agri->setStyleSheet(" QPushButton { background-color:#519B80;border: 1px white;border-radius: 10px;font: 18pt Yu Gothic UI;font-weight: bold;color: #28322E; }");
 }
 
-void MainWindow::on_suppression_clicked()
+void MainWindow::on_suppression_clicked() // hedhy ki tnzl al icone poubelle mta3 suppression
 {
     agri a1;
     a1.setida(ui->idsupp->text());
@@ -142,7 +152,7 @@ void MainWindow::on_suppression_clicked()
 
 }
 
-void MainWindow::on_modifier_clicked()
+void MainWindow::on_modifier_clicked() // hedhy ki tnzl al modifier
 {
     agri a;
         a.setida(ui->id->text());
@@ -167,7 +177,7 @@ void MainWindow::on_modifier_clicked()
             }
 }
 
-void MainWindow::on_pdf_clicked()
+void MainWindow::on_pdf_clicked() //hedhy ki tnzl al icone mta3 exportation
 {
     QString nomFichierPdf = QFileDialog::getSaveFileName(this, "Enregistrer en PDF", "", "Fichiers PDF (*.pdf)");
 
@@ -183,7 +193,7 @@ void MainWindow::on_pdf_clicked()
 }
 
 
-void MainWindow::on_rech_clicked()
+void MainWindow::on_rech_clicked() //hedhy ki tnzl al icone mta3 recherche
 {
     agri a;
       a.setida(ui->idsupp->text());
@@ -200,7 +210,7 @@ void MainWindow::on_rech_clicked()
       }
 }
 
-void MainWindow::showstat()
+void MainWindow::showstat() //hedhy fonction mta3 statistiques
 {
     QString sqlQuery = "SELECT TYPE, SUM(QUANTITE) AS quantitetotale FROM agri GROUP BY TYPE";
        QSqlQuery query;
@@ -225,7 +235,7 @@ void MainWindow::showstat()
        QChart *chart = new QChart();
        chart->addSeries(series);
        chart->setTitle("Statistiques de vente par type");
-       chart->setAnimationOptions(QChart::SeriesAnimations);
+       chart->setAnimationOptions(QChart::AllAnimations);
 
       QValueAxis *axisY = new QValueAxis();
        chart->setAxisY(axisY, series);
@@ -241,7 +251,7 @@ void MainWindow::showstat()
 
 
 
-void MainWindow::on_calculbenefice_clicked()
+void MainWindow::on_calculbenefice_clicked() // hedhy ki tinzil ala bouton mktoub fih benefice
 {
     double beneficeTotal = a.calculbenefice();
 
@@ -261,8 +271,9 @@ void MainWindow::on_calculbenefice_clicked()
         // Afficher la nouvelle fenêtre
         nouvelleFenetre.exec();
 }
-
-void MainWindow::on_pushButton_clicked()
+// hedhy tab3a metier 2 mt3y
+// fma conseil.cpp tab3a metier 2 mt3y
+void MainWindow::on_pushButton_clicked() // hedha ki tinzil ala hak il lampe baad matiktib type de plante fil qlineedit illi mktoub fiha conseil
 {
     conseil( nouvelleFenetre);
     QString resultatStr1, resultatStr2, resultatStr3, resultatStr4, resultatStr5, resultatStr6, resultatStr7, resultatStr8;
@@ -292,6 +303,7 @@ void MainWindow::on_pushButton_clicked()
         nouvelleFenetre.setLabelText8(resultatStr8);
         nouvelleFenetre.setLabelTextm(m);
         nouvelleFenetre.setLabelTextp(p);
+        nouvelleFenetre.exec();
     }
     else if(ui->pconseil->text()=="fruits")
     {
@@ -319,6 +331,7 @@ void MainWindow::on_pushButton_clicked()
         nouvelleFenetre.setLabelText8(resultatStr8);
         nouvelleFenetre.setLabelTextm(m);
         nouvelleFenetre.setLabelTextp(p);
+        nouvelleFenetre.exec();
     }
     else if(ui->pconseil->text()=="ornement")
     {
@@ -346,6 +359,7 @@ void MainWindow::on_pushButton_clicked()
         nouvelleFenetre.setLabelText8(resultatStr8);
         nouvelleFenetre.setLabelTextm(m);
         nouvelleFenetre.setLabelTextp(p);
+        nouvelleFenetre.exec();
     }
     else if(ui->pconseil->text()=="aromatique")
     {
@@ -373,6 +387,7 @@ void MainWindow::on_pushButton_clicked()
         nouvelleFenetre.setLabelText8(resultatStr8);
         nouvelleFenetre.setLabelTextm(m);
         nouvelleFenetre.setLabelTextp(p);
+        nouvelleFenetre.exec();
     }
     else if(ui->pconseil->text()=="cereale")
     {
@@ -400,22 +415,23 @@ void MainWindow::on_pushButton_clicked()
         nouvelleFenetre.setLabelText8(resultatStr8);
         nouvelleFenetre.setLabelTextm(m);
         nouvelleFenetre.setLabelTextp(p);
+        nouvelleFenetre.exec();
     }
     else if(ui->pconseil->text()=="fourrage")
     {
-        QString t= QString("Les fruits");
+        QString t= QString("Les fourrages");
         QString m= QString("Les maladies courrantes");
         QString p= QString("Les pesticides");
-        resultatStr1=QString("Choisissez des variétés\nadaptées au climat de\nvotre région et résistantes\naux maladies locales.");
-        resultatStr2 = QString("Appliquez des engrais\néquilibrés en fonction des\nbesoins nutritifs\nspécifiques de chaque\ntype de fruit.");
-        resultatStr3= QString("Contrôlez les mauvaises\nherbes autour des arbres\nfruitiers pour éviter\nla compétition pour les\nnutriments.");
-        resultatStr4= QString("Pratiquez une taille\nrégulière pour maintenir la\nforme des arbres et\nfavoriser une meilleure\ncirculation de l'air.");
-        resultatStr5= QString("Utilisez des méthodes\nbiologiques et des pièges\npour contrôler les\nravageurs sans recourir\nsystématiquement aux\npesticides.");
-        resultatStr6= QString("1. Tavelure : \nTavelure des pommiers.\n2. Chancre : \nChancre des cerisiers.\n3. Feu bactérien  : \nFeu bactérien des poiriers.");
-        resultatStr7= QString("Il est crucial de surveiller\nrégulièrement vos arbres\nfruitiers pour détecter\nrapidement tout signe de\nmaladie ou de ravageur.\nAdoptez des pratiques de\ngestion intégrée des\nravageurs (GIR) pour\nminimiser l'utilisation de\npesticides chimiques. ");
-        resultatStr8= QString("-Privilégiez des\npesticides naturels,\ntels que les huiles\nessentielles.\n"
-                              "-Utilisez des\nherbicides sélectifs pour\nle contrôle des\nmauvaises herbes.\n"
-                              "-Utilisez des fongicides\npour prévenir ou\ntraiter les maladies\nfongiques.");
+        resultatStr1=QString("Adoptez des pratiques\nagricoles durables pour\nminimiser l'impact\nenvironnemental.");
+        resultatStr3=QString("Effectuez des coupes\nrégulières pour\nencourager une\ncroissance saine et la\nproduction de qualité.");
+        resultatStr2= QString("Respectez les\nrecommandations\npour la densité de semis\net la profondeur de\nplantation en fonction du\ntype de fourrage choisi.");
+        resultatStr4= QString("Assurez-vous que les\néquipements de récolte,\ntels que les faucheuses ou\nles andaineurs, sont en\nbon état pour maximiser\nl'efficacité de la récolte.");
+        resultatStr5= QString("Gérez correctement les\nrésidus de culture\naprès la récolte pour\npréparer le terrain pour\nla saison suivante.");
+        resultatStr6= QString("1. Fusariose  : \nFusariose du ray-grass.\n2. Anthracnose : \nAnthracnose de la luzerne.\n3. Mildiou  : \nMildiou du trèfle rouge.");
+        resultatStr7= QString("La vigilance constante\nvis-à-vis de la santé des\ncultures de fourrages est\nune pratique indispensable.\nEn optant pour des\nstratégies de gestion\nintégrée des ravageurs,\non favorise une approche\néquilibrée qui limite lan\nécessité de recourir à des\npesticides chimiques.");
+        resultatStr8= QString("-Privilégiez des\nnématocides pour le\ncontrôle des nématodes du sol.\n"
+                              "-Utilisez des herbicides\nsélectifs pour le contrôle\ndes mauvaises herbes.\n"
+                              "-Utilisez des insecticides\nspécifiques si des\nravageurs insectes\nposent problème.");
         nouvelleFenetre.setLabelText(t);
         nouvelleFenetre.setLabelText1(resultatStr1);
         nouvelleFenetre.setLabelText2(resultatStr2);
@@ -427,22 +443,23 @@ void MainWindow::on_pushButton_clicked()
         nouvelleFenetre.setLabelText8(resultatStr8);
         nouvelleFenetre.setLabelTextm(m);
         nouvelleFenetre.setLabelTextp(p);
+        nouvelleFenetre.exec();
     }
     else if(ui->pconseil->text()=="oleagineux")
     {
-        QString t= QString("Les fruits");
+        QString t= QString("Les oleagineux");
         QString m= QString("Les maladies courrantes");
         QString p= QString("Les pesticides");
-        resultatStr1=QString("Choisissez des variétés\nadaptées au climat de\nvotre région et résistantes\naux maladies locales.");
-        resultatStr2 = QString("Appliquez des engrais\néquilibrés en fonction des\nbesoins nutritifs\nspécifiques de chaque\ntype de fruit.");
-        resultatStr3= QString("Contrôlez les mauvaises\nherbes autour des arbres\nfruitiers pour éviter\nla compétition pour les\nnutriments.");
-        resultatStr4= QString("Pratiquez une taille\nrégulière pour maintenir la\nforme des arbres et\nfavoriser une meilleure\ncirculation de l'air.");
-        resultatStr5= QString("Utilisez des méthodes\nbiologiques et des pièges\npour contrôler les\nravageurs sans recourir\nsystématiquement aux\npesticides.");
-        resultatStr6= QString("1. Tavelure : \nTavelure des pommiers.\n2. Chancre : \nChancre des cerisiers.\n3. Feu bactérien  : \nFeu bactérien des poiriers.");
-        resultatStr7= QString("Il est crucial de surveiller\nrégulièrement vos arbres\nfruitiers pour détecter\nrapidement tout signe de\nmaladie ou de ravageur.\nAdoptez des pratiques de\ngestion intégrée des\nravageurs (GIR) pour\nminimiser l'utilisation de\npesticides chimiques. ");
-        resultatStr8= QString("-Privilégiez des\npesticides naturels,\ntels que les huiles\nessentielles.\n"
-                              "-Utilisez des\nherbicides sélectifs pour\nle contrôle des\nmauvaises herbes.\n"
-                              "-Utilisez des fongicides\npour prévenir ou\ntraiter les maladies\nfongiques.");
+        resultatStr1=QString("Récoltez au stade de\nmaturité approprié pour\nmaximiser le rendement\net la qualité.");
+        resultatStr2 = QString("Assurez-vous d'un sol\nbien drainé et riche\nen matière organique.");
+        resultatStr3= QString("Choisissez des cultures\nadaptées à votre objectif\n(huile, graines, etc.)");
+        resultatStr4= QString("Assurez-vous d'une\nirrigation adéquate,\nsurtout pendant les\npériodes cruciales de\ndéveloppement.");
+        resultatStr5= QString("Respectez les\nrecommandations\nd'espacement pour\nfavoriser une croissance\noptimale.");
+        resultatStr6= QString("1. Septoriose : \nprovoquée par Septoria_l.\n2. Kabatiellose : \nProvoqué par Kabatiella_l.\n3. Fusariose  : \nProvoquée par Fusarium.");
+        resultatStr7= QString("Il est essentiel de\nsurveiller régulièrement\nles cultures oléagineuses,\nd'adopter des pratiques\nagricoles durables et\nd'utiliser des pesticides\navec précaution pour\nminimiser les risques pour\nla santé humaine et \nl'environnement.");
+        resultatStr8= QString("-Privilégiez des\nnématocides à base de\nfipronil pour l'arachide\npar exemple.\n"
+                              "-Utilisez des herbicides\nà base de glyphosate\npour le colza par\nexemple.\n"
+                              "-Utilisez des fongicides\nà base de tébuconazole\npour le contrôle de\nl'anthracnose par\nexemple.");
         nouvelleFenetre.setLabelText(t);
         nouvelleFenetre.setLabelText1(resultatStr1);
         nouvelleFenetre.setLabelText2(resultatStr2);
@@ -454,10 +471,161 @@ void MainWindow::on_pushButton_clicked()
         nouvelleFenetre.setLabelText8(resultatStr8);
         nouvelleFenetre.setLabelTextm(m);
         nouvelleFenetre.setLabelTextp(p);
+        nouvelleFenetre.exec();
     }
     else
     {
         QMessageBox::critical(nullptr,QObject::tr("essayer de nouveau"),QObject::tr("type invalide."),QMessageBox::Cancel);
     }
-    nouvelleFenetre.exec();
+
 }
+
+void MainWindow::on_pushButton_2_clicked() // hedha bouton mt3 arduino
+{
+    QString id;
+    QStringList liste;
+    ar.write_to_arduino("1");
+    //QThread::msleep(2000);
+    QByteArray datafromarduino= ar.read_from_arduino();
+    if(!datafromarduino.isEmpty())
+        qDebug()<<"avant traitement: "<< datafromarduino;
+    int humidity= ar.gethumiditeFromData(datafromarduino);
+    qDebug ()<<"humidite recu: "<<humidity;
+
+    if((400<humidity)&&(humidity<500))
+    {
+        QSqlQuery query;
+        query.prepare("SELECT IDA FROM agri WHERE TYPE LIKE 'legumes' ");
+
+        if (query.exec()) {
+            while (query.next())
+            {
+                QString id = query.value(0).toString();
+                liste.append(id);
+            }
+        }
+        else
+        {
+        qDebug() << "Échec de l'exécution de la requête SQL. Type d'erreur : " << query.lastError().type();
+        }
+        ui->arrosage->setText(liste.join(", "));
+        QMessageBox::information(nullptr, QObject::tr("Arrosage automatique"), QObject::tr("Les légumes sont arrosés automatiquement.\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+    }
+    else if((500<humidity)&&(humidity<600))
+    {
+        QSqlQuery query;
+        query.prepare("SELECT IDA FROM agri WHERE TYPE LIKE 'fruits' ");
+
+        if (query.exec()) {
+            while (query.next())
+            {
+                QString id = query.value(0).toString();
+                liste.append(id);
+            }
+        }
+        else
+        {
+        qDebug() << "Échec de l'exécution de la requête SQL. Type d'erreur : " << query.lastError().type();
+        }
+        ui->arrosage->setText(liste.join(", "));
+        QMessageBox::information(nullptr, QObject::tr("Arrosage automatique"), QObject::tr("Les fruits sont arrosés automatiquement.\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+    }
+    else if((600<humidity)&&(humidity<700))
+    {
+        QSqlQuery query;
+        query.prepare("SELECT IDA FROM agri WHERE TYPE LIKE 'oleagineux' ");
+
+        if (query.exec()) {
+            while (query.next())
+            {
+                QString id = query.value(0).toString();
+                liste.append(id);
+            }
+        }
+        else
+        {
+        qDebug() << "Échec de l'exécution de la requête SQL. Type d'erreur : " << query.lastError().type();
+        }
+        ui->arrosage->setText(liste.join(", "));
+        QMessageBox::information(nullptr, QObject::tr("Arrosage automatique"), QObject::tr("Les oleagineux sont arrosés automatiquement.\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+    }
+    else if((700<humidity)&&(humidity<800))
+    {
+        QSqlQuery query;
+        query.prepare("SELECT IDA FROM agri WHERE TYPE LIKE 'ornement' ");
+
+        if (query.exec()) {
+            while (query.next())
+            {
+                QString id = query.value(0).toString();
+                liste.append(id);
+            }
+        }
+        else
+        {
+        qDebug() << "Échec de l'exécution de la requête SQL. Type d'erreur : " << query.lastError().type();
+        }
+        ui->arrosage->setText(liste.join(", "));
+        QMessageBox::information(nullptr, QObject::tr("Arrosage automatique"), QObject::tr("Les ornements sont arrosés automatiquement.\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+    }
+    else if((800<humidity)&&(humidity<900))
+    {
+        QSqlQuery query;
+        query.prepare("SELECT IDA FROM agri WHERE TYPE LIKE 'fourrage' ");
+
+        if (query.exec()) {
+            while (query.next())
+            {
+                QString id = query.value(0).toString();
+                liste.append(id);
+            }
+        }
+        else
+        {
+        qDebug() << "Échec de l'exécution de la requête SQL. Type d'erreur : " << query.lastError().type();
+        }
+        ui->arrosage->setText(liste.join(", "));
+        QMessageBox::information(nullptr, QObject::tr("Arrosage automatique"), QObject::tr("Les fourrages sont arrosés automatiquement.\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+    }
+    else if((900<humidity)&&(humidity<1000))
+    {
+        QSqlQuery query;
+        query.prepare("SELECT IDA FROM agri WHERE TYPE LIKE 'aromatique' ");
+
+        if (query.exec()) {
+            while (query.next())
+            {
+                QString id = query.value(0).toString();
+                liste.append(id);
+            }
+        }
+        else
+        {
+        qDebug() << "Échec de l'exécution de la requête SQL. Type d'erreur : " << query.lastError().type();
+        }
+        ui->arrosage->setText(liste.join(", "));
+        QMessageBox::information(nullptr, QObject::tr("Arrosage automatique"), QObject::tr("Les aromatiques sont arrosés automatiquement.\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+    }
+    else if((1000<humidity)&&(humidity<1030))
+    {
+        QSqlQuery query;
+        query.prepare("SELECT IDA FROM agri WHERE TYPE LIKE 'cereale' ");
+
+        if (query.exec()) {
+            while (query.next())
+            {
+                QString id = query.value(0).toString();
+                liste.append(id);
+
+            }
+        }
+        else
+        {
+        qDebug() << "Échec de l'exécution de la requête SQL. Type d'erreur : " << query.lastError().type();
+        }
+        ui->arrosage->setText(liste.join(", "));
+        QMessageBox::information(nullptr, QObject::tr("Arrosage automatique"), QObject::tr("Les cereales sont arrosés automatiquement.\nCliquez sur Annuler pour quitter."), QMessageBox::Cancel);
+    }
+
+}
+

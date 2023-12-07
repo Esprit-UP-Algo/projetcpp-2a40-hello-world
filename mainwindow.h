@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDateEdit>
 #include "agri.h"
+#include "arduino.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,6 +20,7 @@ public:
 
 
 private slots:
+
 
     void on_ajouter_clicked();
 
@@ -42,13 +44,16 @@ private slots:
 
     void showstat();
 
-
     void on_calculbenefice_clicked();
 
-    void on_pushButton_clicked();
+    void on_pushButton_clicked(); // mt3 2eme metier mt3y conseil
+
+    void on_pushButton_2_clicked(); // mt3 arduino
 
 private:
     Ui::MainWindow *ui;
     agri a;
+    QByteArray data;
+    arduino ar;
 };
 #endif // MAINWINDOW_H

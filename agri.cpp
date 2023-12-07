@@ -44,7 +44,7 @@ float agri:: getpda(){return pda;}
 float agri:: getpdv(){return pdv;}
 int agri:: getquantite(){return quantite;}
 
-bool agri::ajouter()
+bool agri::ajouter() // ajputer dans le tableau
 {
     QSqlQuery query;
     QDateTime datetime=QDateTime::currentDateTime();
@@ -62,7 +62,7 @@ bool agri::ajouter()
     //qDebug()<<"requete sql: "<<query.exec();
     return query.exec();
 }
-bool agri:: supprimer(QString ida)
+bool agri:: supprimer(QString ida) // suppression selon l'id
 {
     QSqlQuery checkQuery;
     QSqlQuery query;
@@ -80,7 +80,7 @@ bool agri:: supprimer(QString ida)
 }
 
 
-QSqlQueryModel* agri::afficher()
+QSqlQueryModel* agri::afficher() // affichage du tableau
 {
     QSqlQueryModel* model=new QSqlQueryModel();
     QSqlQuery query;
@@ -94,7 +94,8 @@ QSqlQueryModel* agri::afficher()
         model->setHeaderData(6, Qt::Horizontal,QObject::tr("quantite de prod"));
     return model;
 }
-bool agri::updateData( QString ida)
+
+bool agri::updateData( QString ida) // hedhy il update
 {
     QSqlQuery query;
     QString res= QString::number(pda);
@@ -111,7 +112,8 @@ bool agri::updateData( QString ida)
     //qDebug()<<"requete sql: "<<query.exec();
     return query.exec();
 }
-QSqlQueryModel* agri::rechercherPartype(QString ida)
+
+QSqlQueryModel* agri::rechercherPartype(QString ida) // hedhy recherche par type de plante
 {
     QSqlQuery query;
     query.prepare("SELECT * FROM agri WHERE IDA = :ida");
@@ -128,7 +130,7 @@ QSqlQueryModel* agri::rechercherPartype(QString ida)
         return nullptr;
 }
 
-bool agri::exporterPdf(const QString &nomFichier)
+bool agri::exporterPdf(const QString &nomFichier) // exportation pdf
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setOutputFormat(QPrinter::PdfFormat);
@@ -166,7 +168,7 @@ bool agri::exporterPdf(const QString &nomFichier)
     return true;
 }
 
-float agri::calculbenefice()
+float agri::calculbenefice() // hedhy metier 1 ana amlitha tihsib benefice total w 3amla interface tab3a l metier heky ismha benefice
 {
     QSqlQuery query("SELECT ida, quantite, pdv, pda FROM agri");
     double beneficeTotal = 0.0;
@@ -183,3 +185,4 @@ float agri::calculbenefice()
     }
     return beneficeTotal;
 }
+

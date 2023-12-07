@@ -1,6 +1,6 @@
 #include "conseil.h"
 #include "ui_conseil.h"
-
+// 2eme metier
 conseil::conseil(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::conseil)

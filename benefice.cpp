@@ -1,6 +1,6 @@
 #include "benefice.h"
 #include "ui_benefice.h"
-
+//1er metier
 benefice::benefice(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::benefice)
@@ -20,14 +20,7 @@ void benefice::setLabelText(const QString &text)
     ui->ben->setAlignment(Qt::AlignCenter);
 
 }
-/*void benefice::setLabelText1(const QString &text)
-{
-    ui->c->setText(text);
-    QFont font("Tahoma", 8, QFont::Bold);
-    ui->c->setFont(font);
-    ui->c->setAlignment(Qt::AlignCenter);
 
-}*/
 void benefice::setBeneficeTotalText(const QString& text)
 {
     ui->res->setText(text);
