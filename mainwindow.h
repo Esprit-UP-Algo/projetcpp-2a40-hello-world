@@ -5,6 +5,7 @@
 #include"machine.h"
 #include"maintenance.h"
 #include"map.h"
+#include "arduino.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -42,7 +43,7 @@ public slots:
     void showMachineStatistics();
     void updateStatistics();
     void on_rechercher_clicked();
-
+    void setDatabase(QSqlDatabase& db);
     void on_supp_clicked();
 
    // void on_alerte_clicked();
@@ -54,6 +55,8 @@ private slots:
 
     void on_map_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
     machine m;
@@ -61,5 +64,7 @@ private:
      maintenance *fenetreMaintenance;
      map *fenetremap;
      machine *currentmachine;
+     arduino myarduino;
+     QSqlDatabase database;
 };
 #endif // MAINWINDOW_H
