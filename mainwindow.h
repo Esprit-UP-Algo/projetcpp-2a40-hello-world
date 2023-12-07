@@ -13,6 +13,12 @@
 #include<QPieSlice>
 #include<employe.h>
 #include"arduino.h"
+#include"animaux.h"
+#include"agri.h"
+#include"machine.h"
+#include"client.h"
+#include"map.h"
+#include"maintenance.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -107,6 +113,104 @@ private slots:
     void closeEvent(QCloseEvent *event) override;
 
 
+    void on_pushButton_31_clicked();
+
+    void on_pushButton_33_clicked();
+
+    void on_pushButton_35_clicked();
+
+    void on_pushButton_30_clicked();
+    void RechercheID1();
+
+    void on_pushButton_32_clicked();
+
+    void on_pushButton_48_clicked();
+
+    void on_pushButton_34_clicked();
+
+    void on_pushButton_47_clicked();
+
+    void on_pushButton_46_clicked();
+
+    void on_pushButton_45_clicked();
+
+    void on_pushButton_44_clicked();
+
+    void on_pushButton_42_clicked();
+
+    void on_pushButton_43_clicked();
+    void on_rech_clicked();
+    void showstat();
+
+
+    void on_pushButton_41_clicked();
+
+    void on_pushButton_40_clicked();
+
+    void on_pushButton_38_clicked();
+
+    void on_pushButton_37_clicked();
+
+    void on_pushButton_20_clicked();
+    void updateStatistics();
+    void RechercheID2();
+    void showMachineStatistics();
+    void on_pushButton_39_clicked();
+
+    void on_pushButton_19_clicked();
+
+    void on_pushButton_17_clicked();
+
+    void on_pushButton_18_clicked();
+
+    void on_pushButton_27_clicked();
+    void RechercheID4();
+
+    void on_pushButton_29_clicked();
+
+    void on_pushButton_21_clicked();
+
+   // void on_pushButton_22_clicked();
+
+   // void on_pushButton_23_clicked();
+
+    void on_pushButton_24_clicked();
+
+    void on_pushButton_25_clicked();
+
+    void on_pushButton_28_clicked();
+
+    void on_pushButton_26_clicked();
+
+    void on_pb_rdvv_clicked();
+    bool chercher(int id);
+
+
+
+
+    void on_pushButton_49_clicked();
+    void addToCSV(int id, const QString& produit, double prix); //teb3a metier2
+
+
+    void on_pb_fact_clicked();
+
+
+
+    void on_pushButton_22_clicked();
+
+    void on_pushButton_23_clicked();
+
+
+    void on_pushButton_51_clicked();
+
+    void on_map_clicked();
+
+    void on_pushButton_50_clicked();
+
+    void on_label_28_linkActivated(const QString &link);
+
+    //void on_pb_rechhhh_clicked();
+
 private:
     Ui::MainWindow *ui;
     bool icon;
@@ -116,6 +220,17 @@ private:
     QPropertyAnimation *buttonAnimation;
     QByteArray data;
     Arduino A;
+    animaux a;
+    agri ag;
+    machine m;
+    Client C;
+    map *fenetremap;
+    maintenance *fenetreMaintenance;
+    machine *currentmachine;
+
+
+
+
 
 
 };
